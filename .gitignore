@@ -1,0 +1,167 @@
+# ===============================================
+# .gitignore for SEO Tools Website Project
+# ===============================================
+
+# ===== Operating System Files =====
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ===== IDE & Editor Files =====
+# Visual Studio Code
+.vscode/
+*.code-workspace
+.history/
+
+# JetBrains IDEs (WebStorm, PhpStorm, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Atom
+.atom/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# ===== Dependencies & Packages =====
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Composer (PHP)
+vendor/
+composer.lock
+
+# ===== Build & Distribution =====
+dist/
+build/
+*.min.css
+*.min.js
+*.map
+
+# ===== Temporary Files =====
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+*.swo
+*~.nib
+
+# ===== Logs =====
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# ===== Environment Variables =====
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.*.local
+
+# ===== Database =====
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+
+# ===== Uploads & User Generated Content =====
+uploads/
+user-uploads/
+storage/
+
+# ===== Cache =====
+.cache/
+.parcel-cache/
+.webpack/
+*.cache
+
+# ===== Testing =====
+coverage/
+.nyc_output/
+*.test.js.snap
+
+# ===== Documentation (if auto-generated) =====
+# docs/generated/
+# api-docs/
+
+# ===== Sensitive Information =====
+*.pem
+*.key
+*.cert
+*.crt
+config/secrets.js
+config/credentials.js
+
+# ===== Deployment =====
+.deployment
+.htaccess
+
+# ===== Project Specific =====
+# Backup files
+*.backup
+backup/
+
+# Analytics & tracking files
+analytics/
+stats/
+
+# Minified versions (keep source only)
+# assets/css/*.min.css
+# assets/js/*.min.js
+
+# ===== Optional: Uncomment if needed =====
+# Fonts (if using CDN instead)
+# assets/fonts/
+
+# Images (if using CDN/external hosting)
+# assets/images/
+
+# Vendor libraries (if using CDN)
+# vendor/
+
+# ===== Keep These Files =====
+!.gitkeep
+!README.md
+!LICENSE
