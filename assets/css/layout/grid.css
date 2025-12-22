@@ -1,0 +1,34 @@
+/* ===================================
+   GRID SYSTEM
+   ================================= */
+
+.grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+/* Mobile: 1 column (default) */
+.grid-1 {
+  grid-template-columns: 1fr;
+}
+
+/* Tablet: 2 columns (≥ 640px) */
+@media (min-width: 640px) {
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop: 3 columns (≥ 1024px) */
+@media (min-width: 1024px) {
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Large: 4 columns (≥ 1280px) */
+@media (min-width: 1280px) {
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

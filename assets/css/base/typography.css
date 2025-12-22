@@ -1,0 +1,56 @@
+/* ===== Typography ===== */
+
+body {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    background-color: var(--bg-body);
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--text-heading);
+    line-height: var(--leading-normal);
+}
+
+h1 {
+    font-size: var(--text-2xl);
+}
+
+h2 {
+    font-size: var(--text-xl);
+}
+
+h3 {
+    font-size: var(--text-lg);
+}
+
+h4 {
+    font-size: var(--text-md);
+}
+
+h5, h6 {
+    font-size: var(--text-base);
+}
+
+/* Text elements */
+p {
+    margin: 0;
+    color: var(--text-primary);
+}
+
+small {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+}
+
+strong {
+    font-weight: var(--font-semibold);
+}

@@ -1,0 +1,213 @@
+#header {
+    position: relative;
+}
+
+#header .header__main {
+    margin: 0 auto;
+}
+
+#header .header__main .header__icon {
+    color: var(--icon-tools);
+    font-size: var(--icon-md);
+}
+
+#header .header__main .header__text {
+    line-height: var(--leading-tight);
+}
+
+#header .header__main .header__brand {
+    background: var(--text-brand);
+    background-size: 300% 100%;
+    background-position-x: 120%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+
+    animation: text-shine 15s ease-in-out infinite;
+}
+
+#header .header__main .header__subtitle {
+    font-size: var(--text-2xs);
+    font-weight: var(--font-semibold);
+    letter-spacing: var(--tracking-wider);
+
+}
+
+#header .header__meta {
+    display: inline-block;
+    max-width: 275px;
+    font-size: var(--text-xs);
+}
+
+#header .header__theme-toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#header .header__theme-toggle .btn__theme-toggle {
+    position: static;
+    display: flex;
+
+    padding: var(--space-2);
+    border-radius: var(--radius-full);
+
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--text-button);
+    border: var(--border);
+
+    backdrop-filter: blur(6px);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+#header .header__theme-toggle .btn__theme-toggle:hover {
+    background: var(--button-bg-hover);
+    color: var(--button-text-button-hover);
+}
+
+
+.theme-tooltip {
+    display: none;
+    position: absolute;
+    transform: translateX(80%);
+    background-color: var(--button-bg-hover);
+    border: var(--border);
+    border-radius: var(--radius-xl);
+    /* padding: 8px 16px; */
+    font-size: var(--text-sm);
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    color: var(--button-text-button-hover);
+}
+
+/* Mũi tên trỏ sang trái - viền đen */
+.theme-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -7px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-right: 7px solid var(--border-color);
+}
+
+/* Mũi tên trỏ sang trái - phần trắng bên trong */
+.theme-tooltip::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -5px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-right: 7px solid var(--button-bg-hover);
+    z-index: 1;
+}
+
+.btn__theme-toggle:hover+.theme-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+@media (min-width: 480px) {
+    #header .header__main .header__icon {
+        font-size: var(--icon-xl);
+    }
+
+    #header .header__main .header__brand {
+        font-size: var(--text-xl);
+    }
+
+    #header .header__main .header__subtitle {
+        font-size: var(--text-xs);
+        font-weight: var(--font-semibold);
+        letter-spacing: var(--tracking-wider);
+
+    }
+
+    #header .header__main .header__meta {
+        font-size: var(--text-base);
+    }
+}
+
+@media (min-width: 640px) {
+
+    #header .header__main .header__icon {
+        font-size: var(--icon-2xl);
+    }
+
+    #header .header__main .header__brand {
+        font-size: var(--text-2xl);
+    }
+
+    #header .header__main .header__subtitle {
+        font-size: var(--text-base);
+        font-weight: var(--font-semibold);
+        letter-spacing: var(--tracking-wider);
+
+    }
+
+    #header .header__meta {
+        max-width: 390px;
+        font-size: var(--text-base);
+    }
+
+    .theme-tooltip {
+        display: unset;
+    }
+}
+
+@media (min-width: 1024px) {
+
+    #header .header__main .header__icon {
+        font-size: var(--icon-3xl);
+    }
+
+    #header .header__main .header__brand {
+        font-size: var(--text-3xl);
+    }
+
+    #header .header__main .header__subtitle {
+        font-size: var(--text-md);
+        font-weight: var(--font-semibold);
+        letter-spacing: var(--tracking-wider);
+
+    }
+
+    #header .header__meta {
+        max-width: 500px;
+        font-size: var(--text-lg);
+    }
+
+    #header .header__theme-toggle .btn__theme-toggle {
+        width: 50px;
+        height: 50px;
+    }
+
+    #header .header__theme-toggle .btn__theme-toggle i {
+        font-size: var(--icon-xs);
+    }
+
+    .theme-tooltip {
+        font-size: var(--text-md);
+        transform: translateX(85%);
+    }
+}

@@ -36,29 +36,29 @@
 
   /* Gradients */
   --gradient-navy-gold: linear-gradient(90deg,
-    #001C40 0%,
-    #E6C853 40%,
-    #ffffffa6 50%,
-    #E6C853 60%,
-    #001C40 100%);
+      #001C40 0%,
+      #E6C853 40%,
+      #ffffffa6 50%,
+      #E6C853 60%,
+      #001C40 100%);
 
   --gradient-gold: linear-gradient(90deg,
-    rgba(255, 255, 255, 0.65) 0%,
-    #E6C853 40%,
-    #001C40 50%,
-    #E6C853 60%,
-    rgba(255, 255, 255, 0.65) 100%);
+      rgba(255, 255, 255, 0.65) 0%,
+      #E6C853 40%,
+      #001C40 50%,
+      #E6C853 60%,
+      rgba(255, 255, 255, 0.65) 100%);
 
   --gradient-gold-metallic: linear-gradient(277deg,
-    #F4CF00 0%,
-    #FDEE46 20%,
-    #D69400 50%,
-    #FDEE46 80%,
-    #F4CF00 100%);
+      #F4CF00 0%,
+      #FDEE46 20%,
+      #D69400 50%,
+      #FDEE46 80%,
+      #F4CF00 100%);
 
   --gradient-blue: linear-gradient(180deg,
-    #4cbdff 0%,
-    #005ccc 100%);
+      #4cbdff 0%,
+      #005ccc 100%);
 
   /* Alpha Colors */
   --overlay-light: rgba(0, 0, 0, 0.06);
@@ -74,16 +74,18 @@
   --font-serif: 'Philosopher', Georgia, serif;
 
   /* Font Sizes */
+  --text-2xs: 10px;
   --text-xs: 12px;
   --text-sm: 13px;
   --text-base: 14px;
   --text-md: 16px;
-  --text-lg: 20px;
-  --text-xl: 24px;
-  --text-2xl: 32px;
-  --text-3xl: 40px;
-  --text-4xl: 48px;
-  --text-5xl: 56px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 32px;
+  --text-4xl: 40px;
+  --text-5xl: 48px;
+  --text-6xl: 56px;
 
   /* Font Weights */
   --font-normal: 400;
@@ -95,12 +97,22 @@
   --leading-tight: 1.4;
   --leading-normal: 1.6;
 
+  /* Letter Spacing */
+  --tracking-tight: -0.02em;
+  --tracking-snug: -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.05em;
+  --tracking-wider: 0.1em;
+
   /* Icon Sizes */
-  --icon-xs: 14px;
+  --icon-2xs: 14px;
+  --icon-xs: 18px;
   --icon-sm: 24px;
-  --icon-md: 40px;
-  --icon-lg: 48px;
-  --icon-xl: 56px;
+  --icon-md: 28px;
+  --icon-lg: 32px;
+  --icon-xl: 40px;
+  --icon-2xl: 48px;
+  --icon-3xl: 56px;
 
 
   /* ===================================
@@ -126,6 +138,7 @@
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
+  --radius-xl: 20px;
   --radius-full: 999px;
 
 
@@ -142,7 +155,7 @@
      ================================= */
 
   /* Text */
-  --text-primary: var(--gray-700);
+  --text-primary: var(--gray-500);
   --text-secondary: var(--gray-400);
   --text-heading: var(--gray-700);
   --text-brand: var(--gradient-navy-gold);
@@ -173,7 +186,7 @@
   --card-border-hover: var(--yellow-light);
   --card-action-text-hover: var(--yellow-primary);
   --button-bg-hover: var(--gray-900);
-  --button-text-button: var(--gray-200);
+  --button-text-button-hover: var(--gray-200);
 
   /* Z-index Scale */
   --z-base: 1;
