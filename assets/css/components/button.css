@@ -1,0 +1,27 @@
+.btn {
+    background-color: var(--bg-button);
+    color: var(--text-button);
+    border: var(--border);
+    border-radius: var(--radius-md);
+    font-size: var(--text-xs);
+}
+
+.btn:hover,
+.btn:focus-visible {
+    background-color: var(--button-bg-hover);
+    color: var(--button-text-button-hover);
+}
+
+@media (min-width: 480px) {
+    .btn {
+        font-size: var(--text-base);
+    }
+}
+@media (min-width: 640px) {
+    .btn {
+        font-size: var(--text-lg);
+    }
+}
+@media (min-width: 640px) {
+
+}

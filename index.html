@@ -14,13 +14,13 @@
     <meta name="apple-mobile-web-app-title" content="Website" />
     <link rel="manifest" href="./assets/favicons/site.webmanifest" />
 
-    <title>TOOLS.BCTECHVIBE.IO.VN | Danh sách công cụ miễn phí cho Website Administrator</title>
+    <title>BCTECHVIBE | Danh sách công cụ miễn phí cho Website Administrator</title>
 </head>
 
 <body>
     <div class="wrapper">
         <!-- Begin: Header content -->
-        <header id="header" class="pt-6 pb-6 mb-8 text-center">
+        <header id="header" class="pt-6 pb-6 mb-4 text-center">
             <div class="container">
                 <div class="header__main d-flex flex-row gap-2 justify-center items-center mb-2 ">
                     <div class="header__icon">
@@ -40,7 +40,7 @@
                 </p>
                 <!-- Button Theme Toggle -->
                 <div class="header__theme-toggle mt-3">
-                    <button id="btn-theme-toggle" class="btn__theme-toggle">
+                    <button id="btn-theme-toggle" class="btn btn__theme-toggle d-flex justify-center items-center">
                         <i class="fa-solid fa-moon"></i>
                     </button>
                     <div class="theme-tooltip px-4 py-2">
@@ -52,8 +52,131 @@
         <!-- End: Header content -->
 
         <!-- Begin: Main content -->
-        <main>
+        <main id="main" class="main pt-6 pb-6 mt-4 mb-4">
+            <div class="container">
+                <div class="grid gird-1 grid-2 grid-3">
+                    <!-- Card DNS Tool -->
+                    <a href="" class="card d-flex flex-col gap-5 card--dns">
+                        <div class="card__header d-flex flex-row justify-between items-center">
+                            <i class="fa-solid fa-globe card__icon"></i>
+                            <span class="badge card__badge uppercase">Network</span>
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title">Tra cứu bản ghi DNS (DNS Lookup)</h3>
+                            <p class="card__description">
+                                Tìm kiếm và đối chiếu các bản ghi DNS (A, CNAME, MX, NS) từ nhiều máy chủ trên toàn cầu.
+                            </p>
+                        </div>
 
+                        <div class="card__footer">
+                            <span class="card__action">
+                                Truy cập công cụ
+                                <i class="fa-solid fa-circle-arrow-right"></i>
+                            </span>
+                        </div>
+                    </a>
+                    <!-- Card SSL Tool -->
+                    <a href="" class="card d-flex flex-col gap-5 card--ssl">
+                        <div class="card__header d-flex flex-row justify-between items-center">
+                            <i class="fa-solid fa-lock card__icon"></i>
+                            <span class="badge card__badge uppercase">Sercurity</span>
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title">Kiểm tra Chứng chỉ SSL (SSL Checker)</h3>
+                            <p class="card__description">
+                                Kiểm tra trạng thái, thông tin và thời hạn hiệu lực của chứng chỉ SSL/TLS trên website.
+                            </p>
+                        </div>
+
+                        <div class="card__footer">
+                            <span class="card__action">
+                                Truy cập công cụ
+                                <i class="fa-solid fa-circle-arrow-right"></i>
+                            </span>
+                        </div>
+                    </a>
+                    <!-- Card Redirect Tool -->
+                    <a href="" class="card d-flex flex-col gap-5 card--redirect">
+                        <div class="card__header d-flex flex-row justify-between items-center">
+                            <i class="fa-solid fa-arrow-up-right-from-square card__icon"></i>
+                            <span class="badge card__badge uppercase">SEO</span>
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title">Theo dõi Chuỗi Chuyển hướng (Redirect Checker)</h3>
+                            <p class="card__description">
+                                Kiểm tra lộ trình chuyển tiếp (301, 302) cùng mã trạng thái HTTP cho từng đường dẫn.
+                            </p>
+                        </div>
+
+                        <div class="card__footer">
+                            <span class="card__action">
+                                Truy cập công cụ
+                                <i class="fa-solid fa-circle-arrow-right"></i>
+                            </span>
+                        </div>
+                    </a>
+                    <!-- Card My IP Address Tool -->
+                    <a href="" class="card d-flex flex-col gap-5 card--ip">
+                        <div class="card__header d-flex flex-row justify-between items-center">
+                            <i class="fa-solid fa-wifi card__icon"></i>
+                            <span class="badge card__badge uppercase">Network</span>
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title">Xác định Địa chỉ IP của tôi (My IP Address)</h3>
+                            <p class="card__description">
+                                Hiển thị địa chỉ IP công khai, thông tin vị trí và nhà mạng đang sử dụng.
+                            </p>
+                        </div>
+
+                        <div class="card__footer">
+                            <span class="card__action">
+                                Truy cập công cụ
+                                <i class="fa-solid fa-circle-arrow-right"></i>
+                            </span>
+                        </div>
+                    </a>
+                    <!-- Card Chmod Calculator Tool -->
+                    <a href="" class="card d-flex flex-col gap-5 card--linux">
+                        <div class="card__header d-flex flex-row justify-between items-center">
+                            <i class="fa-brands fa-linux card__icon"></i>
+                            <span class="badge card__badge uppercase">Linux</span>
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title">Tính toán quyền trên Linux (Chmod Calculator)</h3>
+                            <p class="card__description">
+                                Hỗ trợ xác lập quyền hạn truy cập cho tập tin và thư mục trên hệ thống Linux/Unix.
+                            </p>
+                        </div>
+
+                        <div class="card__footer">
+                            <span class="card__action">
+                                Truy cập công cụ
+                                <i class="fa-solid fa-circle-arrow-right"></i>
+                            </span>
+                        </div>
+                    </a>
+                    <!-- Card Mixed Content Scanner Tool -->
+                    <a href="" class="card d-flex flex-col gap-5 card--mixed">
+                        <div class="card__header d-flex flex-row justify-between items-center">
+                            <i class="fa-solid fa-bug card__icon"></i>
+                            <span class="badge card__badge uppercase">Website Developer</span>
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title">Quét Nội dung Hỗn hợp (Mixed Content Scan)</h3>
+                            <p class="card__description">
+                                Phát hiện các thành phần không được mã hóa (HTTP) trên website sử dụng HTTPS.
+                            </p>
+                        </div>
+
+                        <div class="card__footer">
+                            <span class="card__action">
+                                Truy cập công cụ
+                                <i class="fa-solid fa-circle-arrow-right"></i>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </main>
         <!-- End: Main content -->
 

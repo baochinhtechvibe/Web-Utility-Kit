@@ -25,6 +25,7 @@
   --blue-accent: #005CCC;
 
   --yellow-primary: #FAB005;
+  --yellow-dark: #DFAA11;
   --yellow-light: #FFD53D;
   --yellow-accent: #F4CF00;
   --yellow-highlight: #FDEE46;
@@ -179,7 +180,7 @@
   --icon-redirect: var(--success);
   --icon-linux: var(--black);
   --icon-mixed: var(--error);
-  --icon-ssl: var(--gradient-gold-metallic);
+  --icon-ssl: var(--yellow-dark);
   --icon-ip: var(--gradient-blue);
 
   /* Interactive States */

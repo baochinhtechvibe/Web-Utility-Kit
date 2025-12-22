@@ -49,27 +49,12 @@
 }
 
 #header .header__theme-toggle .btn__theme-toggle {
-    position: static;
-    display: flex;
-
     padding: var(--space-2);
     border-radius: var(--radius-full);
-
     width: 40px;
     height: 40px;
-    align-items: center;
-    justify-content: center;
-
-    color: var(--text-button);
-    border: var(--border);
-
     backdrop-filter: blur(6px);
     transition: background 0.2s ease, transform 0.2s ease;
-}
-
-#header .header__theme-toggle .btn__theme-toggle:hover {
-    background: var(--button-bg-hover);
-    color: var(--button-text-button-hover);
 }
 
 
@@ -133,7 +118,7 @@
     }
 
     #header .header__main .header__brand {
-        font-size: var(--text-xl);
+        font-size: var(--text-2xl);
     }
 
     #header .header__main .header__subtitle {
@@ -143,8 +128,9 @@
 
     }
 
-    #header .header__main .header__meta {
-        font-size: var(--text-base);
+    #header .header__meta {
+        max-width: 330px;
+        font-size: var(--text-sm);
     }
 }
 
@@ -155,11 +141,11 @@
     }
 
     #header .header__main .header__brand {
-        font-size: var(--text-2xl);
+        font-size: var(--text-3xl);
     }
 
     #header .header__main .header__subtitle {
-        font-size: var(--text-base);
+        font-size: var(--text-md);
         font-weight: var(--font-semibold);
         letter-spacing: var(--tracking-wider);
 
@@ -167,7 +153,7 @@
 
     #header .header__meta {
         max-width: 390px;
-        font-size: var(--text-base);
+        font-size: var(--text-md);
     }
 
     .theme-tooltip {
