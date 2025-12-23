@@ -183,7 +183,7 @@
     }
 
     #header .header__meta {
-        max-width: 1024px
+        max-width: 1024px;
         font-size: var(--text-lg);
     }
 

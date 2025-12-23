@@ -7,7 +7,7 @@
     border: var(--border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 #main .card:hover,
 #main .card:focus,
@@ -29,7 +29,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     min-height: calc(2 * var(--leading-tight) * var(--text-md));
-    font-size: var(--text-md);
+    /* font-size: var(--text-md); */
     font-weight: var(--font-bold);
 }
 
@@ -52,7 +52,7 @@
 
 #main .card:hover .card__action {
     color: var(--card-action-text-hover);
-    transition: color 0.2s ease;
+    transition: color 0.2s var(--transition-fast);
 }
 
 #main .card .card__action i {
@@ -103,7 +103,7 @@
 
     #main .card .card__title {
         min-height: calc(2 * var(--leading-tight) * var(--text-md));
-        font-size: var(--text-xl);
+        /* font-size: var(--text-xl); */
     }
 
     #main .card .card__description {
@@ -127,7 +127,7 @@
 
     #main .card .card__title {
         min-height: calc(2 * var(--leading-tight) * var(--text-md));
-        font-size: var(--text-xl);
+        /* font-size: var(--text-xl); */
     }
 
     #main .card .card__description {
@@ -151,7 +151,7 @@
 
     #main .card .card__title {
         min-height: calc(2 * var(--leading-tight) * var(--text-md));
-        font-size: var(--text-xl);
+        /* font-size: var(--text-xl); */
     }
 
     #main .card .card__description {

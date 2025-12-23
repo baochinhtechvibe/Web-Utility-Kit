@@ -38,7 +38,7 @@ function updateIcon(theme) {
         btnThemeToggle.setAttribute("aria-label", "Switch to light mode");
 
         // Cập nhật text trong tooltip
-        themeLabel.textContent = "Light Mode"
+        themeLabel.textContent = "Light Mode";
 
     } else {
         icon.classList.remove("fa-sun");

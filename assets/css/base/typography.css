@@ -29,14 +29,15 @@ h2 {
 }
 
 h3 {
-    font-size: var(--text-lg);
+    font-size: var(--text-md);
 }
 
 h4 {
     font-size: var(--text-md);
 }
 
-h5, h6 {
+h5,
+h6 {
     font-size: var(--text-base);
 }
 
@@ -53,4 +54,28 @@ small {
 
 strong {
     font-weight: var(--font-semibold);
+}
+
+@media (min-width: 480px) and (max-width: 639px) {
+    h3 {
+        font-size: var(--text-lg);
+    }
+}
+
+@media (min-width: 700px) and (max-width: 1023px) {
+    h3 {
+        font-size: var(--text-lg);
+    }
+}
+
+@media (min-width: 1280px) and (max-width: 1535px) {
+    h3 {
+        font-size: var(--text-lg);
+    }
+}
+
+@media (min-width: 1536px) {
+    h3 {
+        font-size: var(--text-xl);
+    }
 }
