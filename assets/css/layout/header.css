@@ -3,7 +3,7 @@
 }
 
 #header .header__main {
-    margin: 0 auto;
+    /* margin: 0 auto; */
 }
 
 #header .header__main .header__icon {
@@ -57,12 +57,16 @@
     transition: background 0.2s ease, transform 0.2s ease;
 }
 
+#header .btn__theme-toggle:hover.btn .icon--yellow {
+    color: var(--icon-sun);
+}
+
 
 .theme-tooltip {
     display: none;
     position: absolute;
     transform: translateX(80%);
-    background-color: var(--button-bg-hover);
+    background-color: var(--bg-button);
     border: var(--border);
     border-radius: var(--radius-xl);
     /* padding: 8px 16px; */
@@ -74,7 +78,7 @@
     pointer-events: none;
     z-index: 1000;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    color: var(--button-text-button-hover);
+    color: var(--text-button);
 }
 
 /* Mũi tên trỏ sang trái - viền đen */
@@ -102,7 +106,7 @@
     height: 0;
     border-top: 7px solid transparent;
     border-bottom: 7px solid transparent;
-    border-right: 7px solid var(--button-bg-hover);
+    border-right: 7px solid var(--bg-button);
     z-index: 1;
 }
 
@@ -179,7 +183,7 @@
     }
 
     #header .header__meta {
-        max-width: 500px;
+        max-width: 1024px
         font-size: var(--text-lg);
     }
 

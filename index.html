@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -22,7 +22,7 @@
         <!-- Begin: Header content -->
         <header id="header" class="pt-6 pb-6 mb-4 text-center">
             <div class="container">
-                <div class="header__main d-flex flex-row gap-2 justify-center items-center mb-2 ">
+                <div class="header__main d-flex flex-row gap-2 justify-center items-center mb-4 ">
                     <div class="header__icon">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
                     </div>
@@ -40,8 +40,8 @@
                 </p>
                 <!-- Button Theme Toggle -->
                 <div class="header__theme-toggle mt-3">
-                    <button id="btn-theme-toggle" class="btn btn__theme-toggle d-flex justify-center items-center">
-                        <i class="fa-solid fa-moon"></i>
+                    <button id="btn-theme-toggle" class="btn btn__theme-toggle d-flex justify-center items-center" aria-label="Switch to Dark mode">
+                        <i class="fa-solid fa-moon icon--yellow"></i>
                     </button>
                     <div class="theme-tooltip px-4 py-2">
                         <span id="theme-label">Dark Mode</span>
@@ -181,11 +181,14 @@
         <!-- End: Main content -->
 
         <!-- Begin: Footer content -->
-        <footer>
+        <footer id="footer">
+            <div class="container">
 
+            </div>
         </footer>
         <!-- End: Footer content -->
     </div>
+    <script src="assets/js/core/theme-toggle.js"></script>
 </body>
 
 </html>
