@@ -221,7 +221,7 @@
    --max-width-container: 1280px;
    --partner-logo-size: clamp(32px, 4vw, 48px);
    --theme-toggle-label: "Dark mode";
-   --footer-bg: url('/assets/images/layout/footer/footer_background-light.jpg');
+   --footer-bg: url('../../../public/assets/images/layout/footer/footer_background-light.jpg');
 }
 
 
@@ -256,7 +256,7 @@ html[data-theme="dark"] {
 
    /* Utilities */
    --theme-toggle-label: "Light mode";
-   --footer-bg: url('/assets/images/layout/footer/footer_background-dark.png');
+   --footer-bg: url('../../../public/assets/images/layout/footer/footer_background-dark.png');
 }
 
 
