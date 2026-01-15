@@ -3,10 +3,11 @@
    ================================= */
 
 /* Display */
-.d-none { display: none; }
+.d-none { display: none !important;}
 .d-block { display: block; }
 .d-inline-block { display: inline-block; }
 .d-flex { display: flex; }
+.d-inline-flex { display: inline-flex; }
 .d-grid { display: grid; }
 
 /* Flexbox */
@@ -22,6 +23,7 @@
 .items-start { align-items: flex-start; }
 .items-center { align-items: center; }
 .items-end { align-items: flex-end; }
+.items-stretch { align-items: stretch; }
 
 .flex-1 { flex: 1; }
 
@@ -72,6 +74,14 @@
 .rounded-md { border-radius: var(--radius-md); }
 .rounded-lg { border-radius: var(--radius-lg); }
 .rounded-full { border-radius: var(--radius-full); }
+.rounded-top {
+   border-top-left-radius: var(--radius-md);
+   border-top-right-radius: var(--radius-md);
+}
+.rounded-bottom {
+   border-bottom-left-radius: var(--radius-md);
+   border-bottom-right-radius: var(--radius-md);
+}
 
 /* Shadow */
 .shadow-sm { box-shadow: var(--shadow-sm); }

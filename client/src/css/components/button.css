@@ -10,6 +10,8 @@
 .btn:focus-visible {
     background-color: var(--button-bg-hover);
     color: var(--button-text-button-hover);
+    opacity: 0.8;
+
 }
 
 @media (min-width: 480px) {

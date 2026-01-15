@@ -1,0 +1,1449 @@
+// =================================//
+//  DNS LOOKUP - MAIN JAVASCRIPT
+//==================================//
+
+// =================================//
+//  CONFIG & GLOBAL STATE
+//==================================//
+const API_BASE_URL = "http://localhost:3101/api";
+// DOM Elements
+const form = document.getElementById("dnsLookupForm");
+const hostnameInput = document.getElementById("hostname");
+const dnsServerSelect = document.getElementById("dnsServer");
+const recordTypeSelect = document.getElementById("recordType");
+const btnResolve = document.getElementById("btnResolve");
+const searchIcon = document.getElementById("searchIcon");
+const loadingIcon = document.getElementById("loadingIcon");
+const resultsSection = document.getElementById("resultsSection");
+const errorSection = document.getElementById("errorSection");
+const tableWrapper = document.getElementById("tableWrapper");
+const resultsTableHead = document.getElementById("resultsTableHead");
+const resultsTableBody = document.getElementById("resultsTableBody");
+const resultDNSSECSection = document.getElementById("resultDNSSECSection");
+const dnssecDetailTitleDNSKEY = document.getElementById("dnssecDetailTitleDNSKEY");
+const tableWrapperDNSKEY = document.getElementById("tableWrapperDNSKEY");
+const resultsTableHeadDNSKEY = document.getElementById("resultsTableHeadDNSKEY");
+const resultsTableBodyDNSKEY = document.getElementById("resultsTableBodyDNSKEY");
+const dnssecDetailTitleDS = document.getElementById("dnssecDetailTitleDS");
+const dnssecDetailHeaderDS = document.getElementById("dnssecDetailHeaderDS");
+const tableWrapperDS = document.getElementById("tableWrapperDS");
+const resultsTableHeadDS = document.getElementById("resultsTableHeadDS");
+const resultsTableBodyDS = document.getElementById("resultsTableBodyDS");
+const dnssecDetailTitleRRSIG = document.getElementById("dnssecDetailTitleRRSIG");
+const tableWrapperRRSIG = document.getElementById("tableWrapperRRSIG");
+const resultsTableHeadRRSIG = document.getElementById("resultsTableHeadRRSIG");
+const resultsTableBodyRRSIG = document.getElementById("resultsTableBodyRRSIG");
+const resultsTitle = document.getElementById("resultsTitle");
+const shareLinkSection = document.getElementById("shareLinkSection");
+const shareLink = document.getElementById("shareLink");
+const btnCopyLink = document.getElementById("btnCopyLink");
+const btnWhois = document.getElementById("btnWhois");
+
+const BLACKLIST_PROVIDERS = [
+    // High Priority RBLs
+    { host: "b.barracudacentral.org", level: "High" },         // BARRACUDA
+    { host: "zen.spamhaus.org", level: "High" },               // Spamhaus ZEN (gộp SBL/XBL/PBL)
+    { host: "bl.spamcop.net", level: "High" },                 // SPAMCOP
+    { host: "dnsbl-1.uceprotect.net", level: "High" },         // UCEPROTECT Level 1
+    { host: "dnsbl.blocklist.de", level: "High" },             // BLOCKLIST.DE
+    { host: "bl.mailspike.net", level: "High" },               // MAILSPIKE BL
+    { host: "psbl.surriel.com", level: "High" },               // PSBL
+    { host: "db.wpbl.info", level: "High" },                   // WPBL
+    { host: "mail-abuse.blacklist.jippg.org", level: "High" }, // JIPPG
+
+    // Medium Priority RBLs
+    { host: "dnsbl.sorbs.net", level: "Medium" },               // SORBS Aggregate
+    { host: "ips.backscatterer.org", level: "Medium" },         // BACKSCATTERER
+    { host: "dnsbl-2.uceprotect.net", level: "Medium" },        // UCEPROTECT Level 2
+    { host: "dnsbl.0spam.org", level: "Medium" },               // 0SPAM
+    { host: "dbl.0spam.org", level: "Medium" },                 // 0SPAM NBL
+    { host: "mail.abusix.zone", level: "Medium" },              // Abusix Mail Intel
+    { host: "rbl.0spam.org", level: "Medium" },                 // 0SPAM RBL
+    { host: "dyna.spamrats.com", level: "Medium" },             // RATS Dyna
+    { host: "noptr.spamrats.com", level: "Medium" },            // RATS NoPtr
+    { host: "spam.spamrats.com", level: "Medium" },             // RATS Spam
+    { host: "z.mailspike.net", level: "Medium" },               // MAILSPIKE Z
+    { host: "sem.blacklist.spamhaus.org", level: "Medium" },    // SEM BLACK
+    { host: "cbl.abuseat.org", level: "Medium" },               // Abuseat CBL
+    { host: "dnsbl.dronebl.org", level: "Medium" },             // DRONE BL
+    { host: "dnsbl.zapbl.net", level: "Medium" },               // ZapBL
+    { host: "hostkarma.junkemailfilter.com", level: "Medium" }, // Hostkarma Black
+    { host: "woodys.smtp.blacklist", level: "Medium" },         // Woodys SMTP (hay timeout)
+    { host: "lashback.uoregon.edu", level: "Medium" },          // LASHBACK
+    { host: "rbl.schulte.org", level: "Medium" },               // Manitu (Schulte)
+    { host: "dnsbl.konstant.no", level: "Medium" },             // Konstant
+    { host: "dnsbl.spfbl.net", level: "Medium" },               // SPFBL DNSBL
+    { host: "rbl.interserver.net", level: "Medium" },           // INTERSERVER
+    { host: "surgate.net", level: "Medium" },                   // Surgate
+    { host: "spamsources.fabel.dk", level: "Medium" },          // FABELSOURCES
+    { host: "dnsbl.anonmails.de", level: "Medium" },            // Anonmails
+    { host: "dnsbl.scientificspam.net", level: "Medium" },      // Scientific Spam
+    { host: "dnsbl.pacifier.net", level: "Medium" },            // Pacifier
+    { host: "spamguard.leadmon.net", level: "Medium" },         // Leadmon
+    { host: "bad.psky.me", level: "Medium" },                   // PSky Bad
+
+    // Low Priority RBLs
+    { host: "dnsbl-3.uceprotect.net", level: "Low" },           // UCEPROTECT Level 3
+    { host: "backscatter.spameatingmonkey.net", level: "Low" }, // SEM BACKSCATTER
+    { host: "tor.dan.me.uk", level: "Low" },                    // DAN TOR
+    { host: "torexit.dan.me.uk", level: "Low" },                // DAN TOREXIT
+    { host: "http.dnsbl.sorbs.net", level: "Low" },             // SORBS HTTP
+    { host: "socks.dnsbl.sorbs.net", level: "Low" },            // SORBS SOCKS
+    { host: "misc.dnsbl.sorbs.net", level: "Low" },             // SORBS Misc
+    { host: "smtp.dnsbl.sorbs.net", level: "Low" },             // SORBS SMTP
+    { host: "web.dnsbl.sorbs.net", level: "Low" },              // SORBS Web
+    { host: "bl.nordspam.com", level: "Low" },                  // Nordspam
+    { host: "all.s5h.net", level: "Low" },                      // s5h.net
+    { host: "korea.services.net", level: "Low" },               // SERVICESNET
+    { host: "dnsbl.cymru.com", level: "Low" },                  // CYMRU BOGONS
+    { host: "calivent.com", level: "Low" },                     // CALIVENT
+    { host: "rbl.redhawk.org", level: "Low" },                  // Redhawk (DRMX)
+    { host: "dnsbl.drbl.gremlin.ru", level: "Low" },            // DRBL Gremlin
+    { host: "dnsbl.kempt.net", level: "Low" },                  // KEMPTBL
+    { host: "dnsbl.swinog.ch", level: "Low" },                  // SWINOG
+    { host: "dnsbl.suomispam.net", level: "Low" },              // Suomispam
+    { host: "relays.nether.net", level: "Low" },                // NETHERRELAYS
+    { host: "unsure.nether.net", level: "Low" },                // NETHERUNSURE
+    { host: "rbl.triumf.ca", level: "Low" },                    // TRIUMF
+    { host: "hil.habeas.com", level: "Low" },                   // HIL
+    { host: "hil2.habeas.com", level: "Low" },                  // HIL2
+];
+
+// ========================================
+// ISP / ORG DISPLAY NORMALIZATION
+// ========================================
+const LEGAL_SUFFIXES = [
+    "joint stock company",
+    "company limited",
+    "limited",
+    "co., ltd",
+    "co ltd",
+    "ltd",
+    "jsc",
+    "corp",
+    "corporation",
+    "group",
+    "inc",
+    "inc.",
+    "plc",        // Public limited company
+    "llc",        // Limited liability company
+    "llp",        // Limited liability partnership
+    "gmbh",       // Đức / Germany
+    "sa",         // Société Anonyme (Pháp / Châu Âu)
+    "ag",         // Aktiengesellschaft (Germany, Switzerland)
+    "pte",        // Singapore private company
+    "srl",        // Italy / Romania / Latin America
+    "spa",        // Italy
+    "oy",         // Finland
+    "ab",         // Sweden / Sweden Ltd.
+    "as",         // Norway / Estonia
+    "bv",         // Netherlands / Dutch
+    "kk",         // Japan / Kabushiki Kaisha
+    "oyj",        // Finland
+    "nv",         // Belgium / Netherlands
+    "sae",        // Spain
+    "sas",        // France
+    "gk",         // Japan / Godo Kaisha
+];
+
+const KEEP_FULL_NAME_KEYWORDS = [
+    "internet network information center",
+    "vnnic",
+    "apnic",
+    "ripe",
+    "arin",
+    "lacnic",
+    "nic"
+];
+
+// Global flags / state
+let blacklistScrollbarFixed = false;
+let blacklistEventSource = null;
+
+// =================================//
+//  LOW-LEVEL UTILS
+//==================================//
+
+// ======== Network / IP helpers ========
+function getDNSServerName(serverId) {
+    const serverNames = {
+        google: "Google DNS",
+        cloudflare: "Cloudflare",
+        quad9: "Quad9",
+        opendns: "OpenDNS",
+    };
+    return serverNames[serverId] || serverId.toUpperCase();
+}
+
+
+function isIP(value) {
+    return /^(\d{1,3}\.){3}\d{1,3}$/.test(value);
+}
+
+function isIPv6(value) {
+    return value.includes(":");
+}
+
+function detectInputType(value) {
+    if (isIP(value)) return "IP";
+    if (isIPv6(value)) return "IP";
+    return "DOMAIN";
+}
+
+function expandIPv6(ip) {
+    // expand :: → đầy đủ 8 block
+    const parts = ip.split("::");
+    let head = parts[0].split(":").filter(Boolean);
+    let tail = parts[1] ? parts[1].split(":").filter(Boolean) : [];
+
+    const missing = 8 - (head.length + tail.length);
+    const zeros = Array(missing).fill("0000");
+
+    const full = [...head, ...zeros, ...tail]
+        .map(p => p.padStart(4, "0"));
+
+    return full.join("");
+}
+
+function getPTRQueryName(ip) {
+    if (isIP(ip)) {
+        // IPv4
+        return ip.split(".").reverse().join(".") + ".in-addr.arpa";
+    }
+
+    if (isIPv6(ip)) {
+        const expanded = expandIPv6(ip);
+        return expanded
+            .split("")
+            .reverse()
+            .join(".") + ".ip6.arpa";
+    }
+
+    return ip;
+}
+
+function normalizeRecordType(hostname, type) {
+    if (type !== "ALL") return type;
+
+    return detectInputType(hostname) === "IP"
+        ? "PTR"
+        : "ALL";
+}
+
+// ======== String / formatting helpers ========
+
+function truncateString(str, maxLength = 64) {
+    if (!str || str.length <= maxLength) return str;
+    return str.substring(0, maxLength) + "...";
+}
+
+function truncateByWords(text = "", maxWords = 3) {
+    const words = text.trim().split(/\s+/);
+
+    // <= maxWords → giữ nguyên, KHÔNG ...
+    if (words.length <= maxWords) {
+        return text.trim();
+    }
+
+    // > maxWords → cắt + ...
+    return words.slice(0, maxWords).join(" ") + " ...";
+}
+
+function stripLegalSuffix(name = "") {
+    let clean = name.toLowerCase();
+
+    // loại bỏ dấu chấm / comma
+    clean = clean.replace(/[.,]/g, "");
+
+    LEGAL_SUFFIXES.forEach(suffix => {
+        clean = clean.replace(new RegExp(`\\b${suffix}\\b`, "gi"), "");
+    });
+
+    return clean.replace(/\s+/g, " ").trim();
+}
+
+function shouldKeepFullName(name = "") {
+    const lower = name.toLowerCase();
+    return KEEP_FULL_NAME_KEYWORDS.some(k => lower.includes(k));
+}
+
+// ======== ISP / ORG normalization ========
+function getISPDisplay(record) {
+    const source = record.org || record.isp;
+    if (!source) return "-";
+
+    // 1️⃣ Nếu tên chứa keyword giữ nguyên (NIC / registry)
+    if (shouldKeepFullName(source)) {
+        return truncateByWords(source, 3);
+    }
+
+    // 2️⃣ Kiểm tra có ngoặc trong tên không
+    const match = source.match(/\(([^)]+)\)/);
+    if (match && match[1]) {
+        const inner = stripLegalSuffix(match[1]);
+        return truncateByWords(inner, 3);
+    }
+
+    // 3️⃣ Bình thường → strip suffix, giữ toàn bộ brand (không chỉ từ đầu)
+    const normalized = stripLegalSuffix(source);
+    const truncated = truncateByWords(normalized, 3); // nếu muốn tối đa 3 từ
+    return truncated
+        .split(" ")
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(" ");
+}
+
+// ======== Country / Geo helpers ========
+/**
+ * Get country code from country name
+ */
+function getCountryCode(countryName) {
+    const countryMap = {
+        "United States": "us",
+        Vietnam: "vn",
+        Singapore: "sg",
+        Japan: "jp",
+        China: "cn",
+        "United Kingdom": "gb",
+        Germany: "de",
+        France: "fr",
+        Australia: "au",
+        Canada: "ca",
+        India: "in",
+        Brazil: "br",
+        Russia: "ru",
+        "South Korea": "kr",
+        Netherlands: "nl",
+        Switzerland: "ch",
+        Sweden: "se",
+        Spain: "es",
+        Italy: "it",
+        Poland: "pl",
+    };
+
+    return countryMap[countryName] || "";
+}
+
+/**
+ * Get country flag emoji or image
+ */
+function getCountryFlag(countryCode) {
+    if (!countryCode) return "";
+
+    // Using flag-icons API
+    const flagUrl = `https://flagcdn.com/24x18/${countryCode.toLowerCase()}.png`;
+    return `<img src="${flagUrl}" alt="${countryCode}" class="country-flag" onerror="this.style.display='none'">`;
+}
+
+// ======== DNS / Protocol helpers ========
+/**
+ * Get type badge HTML
+ */
+function getTypeBadge(type) {
+    const typeClass = `type-${type.toLowerCase()}`;
+    return `<span class="type-badge ${typeClass}">${type}</span>`;
+}
+
+/**
+ * Format TTL value - Display raw seconds
+ */
+function formatTTL(ttl) {
+    if (!ttl && ttl !== 0) return "N/A";
+    return ttl; // Return raw seconds value
+}
+
+/**
+ * Get DNSKEY flag type (ZSK or KSK)
+ */
+function getDNSKEYFlagType(flags) {
+    if (flags === 256) return { type: "ZSK", name: "Zone Signing Key", class: "zsk" };
+    if (flags === 257) return { type: "KSK", name: "Key Signing Key", class: "ksk" };
+    return { type: "Unknown", name: `Flags: ${flags}`, class: "unknown" };
+}
+
+/**
+ * Get algorithm name from algorithm number
+ */
+function getAlgorithmName(algorithmId) {
+    const algorithms = {
+        1: "RSA/MD5",
+        3: "DSA/SHA1",
+        5: "RSA/SHA-1",
+        6: "DSA-NSEC3-SHA1",
+        7: "RSASHA1-NSEC3-SHA1",
+        8: "RSA/SHA-256",
+        10: "RSA/SHA-512",
+        12: "GOST R 34.10-2001",
+        13: "ECDSA Curve P-256 with SHA-256",
+        14: "ECDSA Curve P-384 with SHA-384",
+        15: "Ed25519",
+        16: "Ed448"
+    };
+    return algorithms[algorithmId] || `Unknown (${algorithmId})`;
+}
+
+/**
+ * Get digest type name
+ */
+function getDigestTypeName(digestType) {
+    const types = {
+        1: "SHA-1",
+        2: "SHA-256",
+        3: "GOST R 34.11-94",
+        4: "SHA-384"
+    };
+    return types[digestType] || `Unknown (${digestType})`;
+}
+
+function getDNSSECStatusClass(status) {
+    switch (status) {
+        case "SECURE":
+            return "status-secure";
+        case "INSECURE":
+            return "status-insecure";
+        case "BOGUS":
+            return "status-bogus";
+        default:
+            return "status-unknown";
+    }
+}
+
+/**
+ * Format expiration date
+ */
+function formatExpirationDate(dateString) {
+    if (!dateString || dateString === "0001-01-01T00:00:00Z") {
+        return "N/A";
+    }
+
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = date - now;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    const formatted = date.toLocaleString('vi-VN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+
+    let statusClass = "expires-ok";
+    let statusText = "";
+
+    if (diffDays < 0) {
+        statusClass = "expires-expired";
+        statusText = "⚠️ Expired";
+    } else if (diffDays <= 7) {
+        statusClass = "expires-warning";
+        statusText = `⚠️ Expires in ${diffDays} days`;
+    } else if (diffDays <= 30) {
+        statusClass = "expires-soon";
+        statusText = `Expires in ${diffDays} days`;
+    } else {
+        statusText = `Valid for ${diffDays} days`;
+    }
+
+    return `
+        <div class="expiration-info">
+            <div class="expiration-date">${formatted}</div>
+            <div class="expiration-status ${statusClass}">${statusText}</div>
+        </div>
+    `;
+}
+
+// ======== URL / Share helpers ========
+/**
+ * Generate share link
+ */
+function generateShareLink(hostname, type, server) {
+    const baseUrl = window.location.origin + window.location.pathname;
+    return `${baseUrl}?host=${encodeURIComponent(
+        hostname
+    )}&type=${type}&server=${server}`;
+}
+
+/**
+ * Get IP info link
+ */
+function getIPInfoLink(ip) {
+    return `https://check-host.net/ip-info?host=${ip}`;
+}
+
+/**
+ * Đổi link URL
+ */
+
+function updateURL(host, server, type) {
+    const params = new URLSearchParams({
+        host,
+        server,
+        type
+    });
+
+    const newURL = `${window.location.pathname}?${params.toString()}`;
+    window.history.pushState({}, '', newURL);
+}
+
+// =================================//
+//  API / DATA ACCESS LAYER
+//==================================//
+/**
+ * Perform DNS lookup
+ */
+async function performDNSLookup(hostname, type, server) {
+    showElements("none", resultsSection, shareLinkSection, errorSection);
+    try {
+        const response = await fetch(`${API_BASE_URL}/dns/lookup`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                hostname,
+                type,
+                server,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "DNS lookup failed");
+        }
+
+        return data;
+    } catch (error) {
+        console.error("DNS Lookup Error:", error);
+        throw error;
+    }
+}
+
+async function resolveIPv4(hostname, server) {
+    const res = await performDNSLookup(hostname, "A", server);
+    const records = res.data.records || [];
+    const a = records.find(r => r.type === "A");
+    return a ? a.address : null;
+}
+
+// =================================//
+//  BLACKLIST DOMAIN LOGIC
+//==================================//
+function cleanupBlacklistStream() {
+    if (blacklistEventSource) {
+        blacklistEventSource.close();
+        blacklistEventSource = null;
+    }
+}
+
+function performBlacklistStream(ip) {
+    let blacklistTotal = BLACKLIST_PROVIDERS.length;
+    let blacklistListed = 0;
+    errorSection.style.display = "none";
+    resultsTableBody.innerHTML = "";
+
+    const rowMap = {};
+
+    // Header
+    resultsTableHead.innerHTML = `
+        <tr>
+            <th class= "results-table__cell results-table__cell--rbl-provider">RBL PROVIDER</th>
+            <th class= "results-table__cell results-table__cell--rbl-type">TYPE</th>
+            <th class= "results-table__cell results-table__cell--rbl-level">LEVEL</th>
+            <th class= "results-table__cell results-table__cell--rbl-status">STATUS</th>
+            <th class= "results-table__cell results-table__cell--isp-org">ISP / ORG</th>
+        </tr>
+    `;
+
+    // ✅ 1. RENDER SKELETON TABLE TRƯỚC
+    BLACKLIST_PROVIDERS.forEach(rbl => {
+        const tr = document.createElement("tr");
+        tr.dataset.provider = rbl.host;
+
+        tr.innerHTML = `
+            <td class= "results-table__cell results-table__cell--rbl-provider">${rbl.host}</td>
+            <td class= "results-table__cell results-table__cell--rbl-type"><span class="type-badge type-blacklist">RBL</span></td>
+            <td class= "results-table__cell results-table__cell--rbl-level"><span class="level-badge level-${rbl.level.toLowerCase()}">${rbl.level}</span></td>
+            <td class="results-table__cell results-table__cell--rbl-status status-cell">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>Checking...</span>
+            </td>
+            <td class="results-table__cell results-table__cell--rbl-isp">-</td>
+        `;
+
+        rowMap[rbl.host] = tr;
+        resultsTableBody.appendChild(tr);
+    });
+
+    // Title ban đầu
+    resultsTitle.innerHTML = `
+        <i class="fas fa-shield-alt"></i>
+        Blacklist Check: <strong>${ip}</strong>
+        <span class="ml-2 badge badge-secondary">Checking...</span>
+    `;
+
+    // ✅ 2. SSE STREAM
+    cleanupBlacklistStream();
+
+    blacklistEventSource = new EventSource(
+        `${API_BASE_URL}/dns/blacklist-stream/${encodeURIComponent(ip)}`
+    );
+
+    blacklistEventSource.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+
+        if (data.type === "BLACKLIST_SUMMARY") {
+            resultsTitle.innerHTML = `
+            <i class="fas fa-shield-alt"></i>
+            Blacklist Check:
+            <div class="results__section-title-rbl-realtime">
+                <strong>${data.ip}</strong>
+                <span class="ml-1 ${data.listed > 0 ? "badge-danger" : "badge-success"}">
+                    ${data.listed}/${data.total} blacklist
+                </span>
+            </div>
+        `;
+            return;
+        }
+
+        if (data.type === "BLACKLIST") {
+            const row = rowMap[data.provider];
+            if (!row) return;
+
+            const statusCell = row.querySelector(".status-cell");
+            statusCell.innerHTML = renderBlacklistStatus(data.status);
+        }
+    };
+
+    blacklistEventSource.onerror = () => {
+        blacklistEventSource.close();
+        blacklistEventSource = null;
+        hideLoading();
+    };
+}
+
+function renderBlacklistStatus(status) {
+    switch (status) {
+        case "OK":
+            return `
+                <i class="fa-solid fa-circle-check icon-ok"></i>
+                <span class="status status--ok">
+                    OK
+                </span>
+            `;
+
+        case "LISTED":
+            return `
+                <i class="fa-solid fa-circle-xmark icon-listed"></i>
+                <span class="status status--listed">
+                    Listed
+                </span>
+            `;
+
+        case "TIMEOUT":
+            return `
+                <i class="fa-solid fa-circle-exclamation icon-timeout"></i>
+                <span class="status status--timeout">
+                    TIMEOUT
+                </span>
+            `;
+
+        case "CHECKING":
+            return `
+              <span class="status status--checking">
+                <i class="fa-solid fa-spinner fa-spin"></i> Checking...
+              </span>
+            `;
+
+        default:
+            return `<span>-</span>`;
+    }
+}
+
+// =================================================//
+//  UI STATE CONTROL (LOADING / ERROR / FEEDBACK)
+// =================================================//
+function resetUI() {
+    showElements(
+        "none",
+        resultsSection,
+        resultsTitle,
+        btnWhois,
+        errorSection,
+        tableWrapper,
+        resultDNSSECSection
+    );
+
+    tableWrapper.style.removeProperty("max-height");
+    tableWrapper.style.removeProperty("overflow-y");
+
+}
+
+function setDisplay(el, mode = "none") {
+    if (!el) return;
+
+    const displayClasses = ["d-none", "d-block", "d-flex", "d-inline", "d-inline-block"];
+
+    // Xóa tất cả class display cũ
+    el.classList.remove(...displayClasses);
+
+    // Add class mới nếu có
+    if (mode) {
+        el.classList.add(`d-${mode}`);
+    }
+}
+
+function showElements(mode, ...els) {
+    els.forEach(el => setDisplay(el, mode));
+}
+
+function removeDNone(el) {
+    if (!el) return;
+    el.classList.remove("d-none");
+}
+
+function setResolveButtonLoading(isLoading) {
+    btnResolve.disabled = isLoading;
+    searchIcon.style.display = isLoading ? "none" : "inline-block";
+    loadingIcon.style.display = isLoading ? "inline-block" : "none";
+}
+
+
+/**
+ * Show loading state
+ */
+function showLoading() {
+    btnResolve.disabled = true;
+    searchIcon.style.display = "none";
+    loadingIcon.style.display = "inline-block";
+}
+
+/**
+ * Hide loading state
+ */
+function hideLoading() {
+    btnResolve.disabled = false;
+    searchIcon.style.display = "inline-block";
+    loadingIcon.style.display = "none";
+}
+
+/**
+ * Show error message
+ */
+function showError(message) {
+    const errorMessage = document.getElementById("errorMessage");
+    errorMessage.textContent = message;
+    setDisplay(errorSection, "block");
+    setDisplay(shareLinkSection, "none");
+
+    errorSection.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function showCopyFeedback(icon, type) {
+    const messages = {
+        "public-key": "Public key copied",
+        "digest": "Digest copied",
+        "default": "Copied to clipboard"
+    };
+
+    const message = messages[type] || messages.default;
+
+    // Đổi icon
+    icon.classList.remove("fa-copy");
+    icon.classList.add("fa-check", "copied");
+
+
+    setTimeout(() => {
+        icon.classList.remove("fa-check", "copied");
+        icon.classList.add("fa-copy");
+    }, 1500);
+}
+
+/**
+ * Copy to clipboard helper
+ */
+function copyToClipboard(text, button) {
+    navigator.clipboard.writeText(text).then(() => {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i>';
+        button.classList.add('copied');
+
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.classList.remove('copied');
+        }, 2000);
+
+    }).catch(err => {
+        console.error("Failed to copy:", err);
+    });
+}
+
+// =================================//
+//  UI RENDERING – ATOMIC
+//==================================//
+/**
+ * Create table row - with safety checks
+ */
+function createTableRow(record, domain) {
+    const row = document.createElement("tr");
+
+    // ✅ SAFETY CHECK: Skip if record.type is undefined or not a string
+    if (!record || !record.type || typeof record.type !== 'string') {
+        console.warn("Invalid record type:", record);
+        return row; // Return empty row
+    }
+
+    let answer = "";
+    let ispOrg = "";
+
+    switch (record.type) {
+        case "A":
+            // Flag và IP nằm trong cột ANSWER
+            const countryA = record.country || "";
+            const countryCodeA = record.countryCode || getCountryCode(countryA);
+            const flagA = countryCodeA ? getCountryFlag(countryCodeA) : "";
+
+            answer = `
+                <div class="answer-cell d-flex flex-row items-center gap-1">
+                    <span>${record.address}</span>
+                    ${flagA}
+                </div>
+            `;
+
+            // ISP/ORG có link
+            if (record.isp || record.org) {
+                const displayText = getISPDisplay(record);
+                ispOrg = `
+                    <a href="${getIPInfoLink(record.address)}"
+                       target="_blank"
+                       class="isp-link d-inline-flex items-center gap-1">
+                        <span class="isp-link__text">${displayText}</span>
+                        <i class="fas fa-external-link-alt isp-link__icon"></i>
+                    </a>
+                `;
+            }
+            break;
+
+        case "AAAA":
+            const countryAAAA = record.country || "";
+            const countryCodeAAAA = record.countryCode || getCountryCode(countryAAAA);
+            const flagAAAA = countryCodeAAAA ? getCountryFlag(countryCodeAAAA) : "";
+
+            answer = `
+                <div class="answer-cell d-flex flex-row items-center gap-1">
+                    <span>${record.address}</span>
+                    ${flagAAAA}
+                </div>
+            `;
+
+            if (record.isp || record.org) {
+                const displayText = getISPDisplay(record);
+                ispOrg = `
+                    <a href="${getIPInfoLink(record.address)}"
+                        target="_blank"
+                        class="isp-link d-inline-flex items-center gap-1">
+                        <span class="isp-link__text">${displayText}</span>
+                        <i class="fas fa-external-link-alt isp-link__icon"></i>
+                    </a>
+                `;
+            }
+            break;
+
+        case "NS":
+            answer = record.nameserver;
+            break;
+
+        case "MX":
+            answer = `${record.exchange} (Priority: ${record.priority})`;
+            break;
+
+        case "CNAME":
+            answer = record.value;
+            break;
+
+        case "TXT":
+            answer = record.value;
+            break;
+
+        case "PTR":
+            const countryPTR = record.country || "";
+            const countryCodePTR = record.countryCode || getCountryCode(countryPTR);
+            const flagPTR = countryCodePTR ? getCountryFlag(countryCodePTR) : "";
+
+            answer = `
+                <div class="answer-cell d-inline-flex items-center gap-1">
+                    <span>${record.value}</span>
+                    ${flagPTR}
+                </div>
+            `;
+
+            if ((record.isp || record.org) && domain) {
+                const displayText = getISPDisplay(record);
+                ispOrg = `
+                    <a href="${getIPInfoLink(domain)}"
+                        target="_blank"
+                        class="isp-link">
+                        <span class="isp-link__text">${displayText}</span>
+                        <i class="fas fa-external-link-alt isp-link__icon"></i>
+                    </a>
+                `;
+            }
+            break;
+
+        case "DNSSEC":
+            answer = `<span class="status-badge ${record.enabled ? "status-active" : "status-inactive"}">${record.status}</span>`;
+            break;
+
+        default:
+            answer = JSON.stringify(record);
+    }
+
+    const isIPInput = isIP(domain) || isIPv6(domain);
+
+    // Ưu tiên hiển thị record.domain nếu có (cho CNAME case)
+    let domainDisplay = domain;
+    if (record.domain) {
+        domainDisplay = record.domain;
+    } else if (record.type === "PTR" || isIPInput) {
+        domainDisplay = getPTRQueryName(domain);
+    }
+
+    row.innerHTML = `
+        <td class="results-table__cell results-table__cell--domain">
+            <span class="results-table__value results-table__value--domain">${domainDisplay}</span>
+        </td>
+        <td class="results-table__cell results-table__cell--type">
+            ${getTypeBadge(record.type)}
+        </td>
+        <td class="results-table__cell results-table__cell--ttl">${formatTTL(record.ttl)}</td>
+        <td class="results-table__cell results-table__cell--answer">
+            <span class="results-table__value results-table__value--answer">
+                ${answer}
+            </span>
+        </td>
+        <td class="results-table__cell results-table__cell--isp">
+            ${ispOrg || "-"}
+        </td>
+    `;
+
+    return row;
+}
+
+// =================================//
+//  UI RENDERING – PAGE
+//==================================//
+/**
+ * Display results in table
+ */
+function displayResults(data) {
+    // LUÔN show section
+    setDisplay(resultsSection, "flex");
+    showElements("block", resultsTitle, tableWrapper, shareLinkSection);
+
+    // 🔴 CHẶN LỖI PTR / INVALID / NOT FOUND
+    if (!data || data.success === false) {
+        showElements("none", btnWhois, resultsTitle, resultsSection, shareLinkSection);
+        btnWhois.onclick = null;
+        setDisplay(errorSection, "block");
+        showError(data?.message || "Không thể tra cứu DNS");
+        return;
+    }
+
+    const { query, records, nameservers } = data.data;
+    const hostname = query.hostname;
+    const type = query.type;
+    const resultsMessage = data.message;
+    const server = query.server;
+
+    const serverDisplayName = getDNSServerName(server);
+
+    const actualRecords = records || [];
+
+    // Determine display name
+    const isIPInput = isIP(hostname) || isIPv6(hostname);
+    const isSubdomainFlag = query.isSubdomain || false;
+    const displayName = type === "PTR" || (type === "ALL" && isIPInput)
+        ? getPTRQueryName(hostname)
+        : hostname;
+
+    // Update title
+    if (type === "ALL") {
+        resultsTitle.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            ALL lookup – <strong>"${displayName}"</strong> via ${serverDisplayName}
+        `;
+    } else {
+        resultsTitle.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            ${type} lookup – <strong>"${displayName}"</strong> via ${serverDisplayName}
+        `;
+    }
+
+    // Show WHOIS button
+    if (
+        !isIPInput &&
+        !isSubdomainFlag &&
+        type !== "PTR" &&
+        type !== "BLACKLIST"
+    ) {
+        setDisplay(btnWhois, "flex");
+        btnWhois.onclick = () => {
+            if (hostname.endsWith(".vn")) {
+                window.open(`https://tino.vn/whois?domain=${hostname}`, "_blank");
+            } else {
+                window.open(`https://www.whois.com/whois/${hostname}`, "_blank");
+            }
+        };
+    } else {
+        setDisplay(btnWhois, "none");
+    }
+
+    // Generate share link
+    const link = generateShareLink(hostname, type, server);
+    shareLink.value = link;
+
+    // Handle DNSSEC separately
+    if (type === "DNSSEC") {
+        resultsTableHead.innerHTML = `
+            <tr>
+                <th class = "results-table__cell results-table__cell--domain">DOMAIN</th>
+                <th class = "results-table__cell results-table__cell--type-dnssec">TYPE</th>
+                <th class = "results-table__cell results-table__cell--status-dnssec">STATUS</th>
+                <th class = "results-table__cell results-table__cell--details">DETAIL</th>
+            </tr>
+        `;
+
+        resultsTableBody.innerHTML = `
+            <tr>
+                <td class = "results-table__cell results-table__cell--domain">${hostname}</td>
+                <td class = "results-table__cell results-table__cell--type-dnssec">${getTypeBadge("DNSSEC")}</td>
+                <td class = "results-table__cell results-table__cell--status-dnssec">
+                    <span class="status-badge ${getDNSSECStatusClass(data.data.dnssec.status)}">
+                        ${data.data.dnssec.status || "UNKNOWN"}
+                    </span>
+                </td>
+                <td "results-table__cell results-table__cell--details">${data.data.dnssec.message || "-"}</td>
+            </tr>
+        `;
+
+        showElements("block", tableWrapper, shareLinkSection);
+        resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (data.data.dnssec.enabled) {
+            displayDNSSECResults(data);
+        }
+        return;
+    }
+
+    // Set table headers based on type
+    if (type === "PTR" || (type === "ALL" && isIPInput)) {
+        resultsTableHead.innerHTML = `
+            <tr>
+                <th class="results-table__cell results-table__cell--ip">IP</th>
+                <th class="results-table__cell results-table__cell--type">TYPE</th>
+                <th class="results-table__cell results-table__cell--ttl">TTL</th>
+                <th class="results-table__cell results-table__cell--answer">ANSWER</th>
+                <th class="results-table__cell results-table__cell--isp">ISP / ORG</th>
+            </tr>
+        `;
+    } else {
+        resultsTableHead.innerHTML = `
+            <tr>
+                <th class="results-table__cell results-table__cell--domain">DOMAIN</th>
+                <th class="results-table__cell results-table__cell--type">TYPE</th>
+                <th class="results-table__cell results-table__cell--ttl">TTL</th>
+                <th class="results-table__cell results-table__cell--answer">ANSWER</th>
+                <th class="results-table__cell results-table__cell--isp">ISP / ORG</th>
+            </tr>
+        `;
+    }
+
+    // Clear previous results
+    resultsTableBody.innerHTML = "";
+
+    // Check if we have actual records
+    if (!actualRecords || actualRecords.length === 0) {
+        setDisplay(tableWrapper, "none");
+        showError(resultsMessage);
+        resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+    }
+
+    showElements("block", tableWrapper, shareLinkSection);
+
+    // Add nameservers as NS records (for ALL type, show them)
+    if (nameservers && nameservers.length > 0 &&
+        type !== "DNSSEC" &&
+        type !== "PTR" &&
+        type !== "BLACKLIST" &&
+        type !== "NS") {
+        nameservers.forEach((ns) => {
+            const nsRecord = {
+                type: "NS",
+                nameserver: ns.nameserver || ns,
+                ttl: ns.ttl || null,
+                domain: ns.domain || hostname,
+            };
+            const row = createTableRow(nsRecord, hostname);
+            if (row && row.children.length > 0) {
+                resultsTableBody.appendChild(row);
+            }
+        });
+    }
+
+    // Populate table with actual records
+    actualRecords.forEach((record) => {
+        // Skip invalid records
+        if (!record || !record.type || typeof record.type !== 'string') {
+            console.warn("Skipping invalid record:", record);
+            return;
+        }
+
+        const row = createTableRow(record, hostname);
+        if (row && row.children.length > 0) {
+            resultsTableBody.appendChild(row);
+        }
+    });
+
+    // Scroll to results
+    resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+async function handleBlacklistSubmit(hostname, server) {
+    // setResolveButtonLoading(true);
+
+    let ip = hostname;
+
+    if (!isIP(hostname)) {
+        ip = await resolveIPv4(hostname, server);
+        if (!ip) {
+            throw new Error("Không tìm thấy bản ghi A để kiểm tra blacklist");
+        }
+    }
+
+    removeDNone(resultsTitle);
+    shareLink.value = generateShareLink(hostname, "BLACKLIST", server);
+    showElements("block", shareLinkSection, resultsSection, tableWrapper);
+    tableWrapper.style.maxHeight = "650px";
+    tableWrapper.style.overflowY = "auto";
+
+    performBlacklistStream(ip);
+}
+
+/**
+ * Display DNSSEC results
+ */
+function displayDNSSECResults(data) {
+    const { query, dnssec } = data.data;
+    const hostname = query.hostname;
+    const server = query.server;
+    const isIPInput = isIP(hostname) || isIPv6(hostname);
+    const isSubdomainFlag = query.isSubdomain || false;
+
+    const serverDisplayName = getDNSServerName(server);
+
+    const recordsByType = {
+        DNSKEY: [],
+        DS: [],
+        RRSIG: []
+    };
+
+    dnssec.records.forEach(record => {
+        if (recordsByType[record.type]) {
+            recordsByType[record.type].push(record);
+        }
+    });
+
+    // ===== UI chung =====
+    // resultsSection.style.display = "block";
+    if (!isIPInput && !isSubdomainFlag) {
+        setDisplay(btnWhois, "flex");
+        btnWhois.onclick = () => {
+            if (hostname.endsWith(".vn")) {
+                window.open(`https://tino.vn/whois?domain=${hostname}`, "_blank");
+            } else {
+                window.open(`https://www.whois.com/whois/${hostname}`, "_blank");
+            }
+        };
+    } else {
+        setDisplay(btnWhois, "none");
+    }
+    setDisplay(resultDNSSECSection, "block");
+
+    resultsTitle.innerHTML = `
+        <i class="fas fa-shield-alt"></i>
+        DNSSEC lookup – <strong>"${hostname}"</strong> via ${serverDisplayName}
+    `;
+
+    shareLink.value = generateShareLink(hostname, "DNSSEC", server);
+
+    // ===== Reset tất cả bảng =====
+    showElements("block", shareLinkSection, tableWrapper);
+    showElements("none", tableWrapperDNSKEY, tableWrapperDS, tableWrapperRRSIG);
+
+    resultsTableBodyDNSKEY.innerHTML = "";
+    resultsTableBodyDS.innerHTML = "";
+    resultsTableBodyRRSIG.innerHTML = "";
+
+    if (!dnssec || !Array.isArray(dnssec.records)) {
+        showError("Không có dữ liệu DNSSEC");
+        return;
+    }
+
+    // ===== Group records =====
+    const dnskeyRecords = dnssec.records.filter(r => r.type === "DNSKEY");
+    const dsRecords = dnssec.records.filter(r => r.type === "DS");
+    const rrsigRecords = dnssec.records.filter(r => r.type === "RRSIG");
+
+    // =========================
+    // DNSKEY TABLE
+    // =========================
+    if (dnskeyRecords.length > 0) {
+        dnssecDetailTitleDNSKEY.innerHTML = `
+        <i class="fas fa-key"></i>
+        DNSKEY Records (${recordsByType.DNSKEY.length})
+        `
+        setDisplay(tableWrapperDNSKEY, "block");
+
+        dnskeyRecords.forEach(record => {
+            const role = getDNSKEYFlagType(record.flags); // KSK / ZSK
+
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td class="results-table__cell">
+                    <span class="key-role-badge key-role-${role.class}">
+                        ${role.type}
+                    </span>
+                </td>
+                <td class="results-table__cell">
+                    ${getAlgorithmName(record.algorithm)}
+                </td>
+                <td class="results-table__cell results-table__cell--mono">
+                    ${record.keyTag}
+                </td>
+                <td class="results-table__cell results-table__cell--mono">
+                    ${record.protocol}
+                </td>
+                <td class="results-table__cell results-table__cell--mono">
+                    <code>
+                        ${record.publicKey}
+                    </code>
+                    <i class="fa-solid fa-copy copy-dnssec"
+                        title="Copy public key"
+                        data-copy-type="public-key"
+                        data-copy-value="${record.publicKey}">
+                    </i>
+                </td>
+            `;
+            resultsTableBodyDNSKEY.appendChild(tr);
+        });
+    }
+
+    // =========================
+    // DS TABLE
+    // =========================
+    if (dsRecords.length > 0) {
+        dnssecDetailTitleDS.innerHTML = `
+        <i class="fas fa-link"></i>
+        DS Records (${recordsByType.DS.length})
+        `
+        setDisplay(tableWrapperDS, "block");
+
+        dsRecords.forEach(record => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td class="results-table__cell results-table__cell--mono">
+                    ${record.keyTag}
+                </td>
+                <td class="results-table__cell">
+                    ${getAlgorithmName(record.algorithm)}
+                </td>
+                <td class="results-table__cell">
+                    ${getDigestTypeName(record.digestType)}
+                </td>
+                <td class="results-table__cell results-table__cell--mono">
+                    <code>
+                        ${record.digest}
+                    </code>
+                    <i class="fa-solid fa-copy copy-dnssec"
+                        title="Copy digest"
+                        data-copy-type="digest"
+                        data-copy-value="${record.digest}">
+                    </i>
+                </td>
+            `;
+            resultsTableBodyDS.appendChild(tr);
+        });
+    }
+
+    // =========================
+    // RRSIG TABLE
+    // =========================
+    if (rrsigRecords.length > 0) {
+        dnssecDetailTitleRRSIG.innerHTML = `
+        <i class="fas fa-signature"></i>
+        RRSIG Records (${recordsByType.RRSIG.length})
+        `
+        setDisplay(tableWrapperRRSIG, "block");
+
+        rrsigRecords.forEach(record => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td class="results-table__cell">
+                    ${record.typeCovered}
+                </td>
+                <td class="results-table__cell">
+                    ${getAlgorithmName(record.algorithm)}
+                </td>
+                <td class="results-table__cell results-table__cell--mono">
+                    ${record.keyTag}
+                </td>
+                <td class="results-table__cell results-table__cell--mono">
+                    ${record.signerName}
+                </td>
+                <td class="results-table__cell">
+                    ${formatExpirationDate(record.expiration)}
+                </td>
+            `;
+            resultsTableBodyRRSIG.appendChild(tr);
+        });
+    }
+
+    resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// =================================//
+//  URL / STATE SYNC
+//==================================//
+/**
+ * Handle URL parameters (auto-fill form)
+ */
+function handleURLParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const host = urlParams.get("host");
+    const type = urlParams.get("type");
+    const server = urlParams.get("server");
+
+    if (host) {
+        hostnameInput.value = host;
+    }
+
+    if (type && recordTypeSelect.querySelector(`option[value="${type}"]`)) {
+        recordTypeSelect.value = type;
+    }
+
+    if (server && dnsServerSelect.querySelector(`option[value="${server}"]`)) {
+        dnsServerSelect.value = server;
+    }
+
+    // Auto submit if all params present
+    if (host && type && server) {
+        setTimeout(() => {
+            form.dispatchEvent(new Event("submit"));
+        }, 500);
+    }
+}
+
+// =================================//
+//  APP LIFECYCLE
+//==================================//
+function initApp() {
+    handleURLParams();
+    hostnameInput.focus();
+    console.log("🚀 DNS Lookup Tool Initialized");
+}
+
+// =================================//
+//  EVENT BINDINGS
+//==================================//
+
+/**
+ * Form / Input
+ */
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Reset UI && BlacklistStream();
+    cleanupBlacklistStream();
+    resetUI();
+
+    const hostname = hostnameInput.value.trim();
+    if (!hostname) return;
+
+    const server = dnsServerSelect.value;
+    let type = normalizeRecordType(hostname, recordTypeSelect.value);
+
+    updateURL(hostname, server, type);
+    showLoading();
+
+    try {
+        if (type === "BLACKLIST") {
+            await handleBlacklistSubmit(hostname, server);
+            return
+        }
+
+        const result = await performDNSLookup(hostname, type, server);
+        displayResults(result);
+    } catch (error) {
+        const msg = error?.message || "Không thể tra cứu DNS. Vui lòng thử lại.";
+        showError(msg);
+    } finally {
+        hideLoading();
+    }
+});
+
+/**
+ * Handle Enter key in hostname input
+ */
+hostnameInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        form.dispatchEvent(new Event("submit"));
+    }
+});
+
+/**
+ * Button
+ */
+btnCopyLink.addEventListener("click", async () => {
+    try {
+        // Chọn input (không bắt buộc, nhưng UX tốt)
+        shareLink.select();
+        shareLink.setSelectionRange(0, 99999); // cho mobile
+
+        // Copy vào clipboard
+        await navigator.clipboard.writeText(shareLink.value);
+
+        // Update button text tạm thời
+        btnCopyLink.innerHTML = `
+            <i class="fa-solid fa-check"></i>
+            <span>Đã copy!</span>
+        `;
+
+        setTimeout(() => {
+            btnCopyLink.innerHTML = `
+                <i class="fas fa-copy"></i>
+                <span>Copy</span>`;
+        }, 3000);
+    } catch (err) {
+        console.error("Copy failed:", err);
+    }
+});
+
+/**
+ * Document-level
+ */
+document.addEventListener("click", function (e) {
+    const icon = e.target.closest(".copy-dnssec");
+    if (!icon) return;
+
+    const value = icon.dataset.copyValue;
+    const type = icon.dataset.copyType || "value";
+
+    navigator.clipboard.writeText(value).then(() => {
+        showCopyFeedback(icon, type);
+    }).catch(() => {
+    });
+});
+
+document.addEventListener("DOMContentLoaded", initApp);
