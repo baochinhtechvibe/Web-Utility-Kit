@@ -43,9 +43,6 @@
     transform: translateY(-6px);
 }
 
-#loadingIcon {
-    display: none;
-}
 
 .page--dns .results__section-header {
     margin-top: var(--space-4);

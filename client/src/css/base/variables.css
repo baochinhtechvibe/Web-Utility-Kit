@@ -20,10 +20,12 @@
    --gray-900: #2C3E50;
 
    /* Brand Colors */
-   --blue-500: #4cbdff;
-   --blue-900: #183153;
-   --blue-700: #005CCC;
    --blue-200: #90CAF9;
+   --blue-400: #42A5F5;
+   --blue-500: #4cbdff;
+   --blue-600: #3280e7;
+   --blue-700: #005CCC;
+   --blue-900: #183153;
 
    --yellow-primary: #FAB005;
    --yellow-deep: #9F6000;
@@ -86,7 +88,7 @@
      ================================= */
 
    /* Font Families */
-   --font-sans: 'Be Vietnam Pro', Inter, Helvetica, sans-serif;
+   --font-sans: Inter, Helvetica, sans-serif;
    --font-serif: 'Philosopher', Georgia, serif;
 
    /* Font Sizes */
@@ -307,6 +309,26 @@
 
    --border-share-link: var(--blue-700);
    --border-error-message-box: var(--yellow-light);
+
+   /* SSL Tool */
+   --ssl-tool-primary: var(--blue-600);
+   --ssl-tool-secondary: var(--blue-500);
+   /* --ssl-tool-text-primary: var(--white); */
+   --ssl-checker-valid: var(--green-700);
+   --ssl-checker-warning: var(--yellow-dark);
+   --ssl-checker-critical: var(--error);
+   --ssl-checker-expired: var(--error);
+   --ssl-checker-good: var(--blue-600);
+   --ssl-checker-ok: var(--green-700);
+   --ssl-checker-weak: var(--yellow-dark);
+   --ssl-checker-ok: var(--green-700);
+   --ssl-checker-bad: var(--orange-400);
+   --ssl-checker-insecure: var(--error);
+   --ssl-checker-bg-badge: var(--gray-200);
+   --ssl-checker-domain-level: var(--ssl-tool-primary);
+   --ssl-checker-intermediate-level: var(--orange-400);
+   --ssl-checker-root-level: var(--green-primary);
+   --ssl-checker-btn-hover: var(--gray-600);
 
 }
 

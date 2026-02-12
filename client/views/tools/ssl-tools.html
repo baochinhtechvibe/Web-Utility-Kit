@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../src/css/main.css" />
+    <link rel="stylesheet" href="../../src/css/pages/ssl-tools.css" />
+    <link rel="stylesheet" href="../../public/assets/vendor/fontawesome/css/all.min.css" />
+    <link rel="icon" type="image/png" href="../../public/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="../../public/favicon.svg" />
+    <link rel="shortcut icon" href="../../public/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../../public/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Website" />
+    <link rel="manifest" href="../../public/site.webmanifest" />
+    <meta name="description"
+        content="Bộ công cụ SSL miễn phí: Kiểm tra SSL (SSL Checker), Giải mã CSR, Giải mã Certificate, và kiểm tra khớp khóa (Key Matcher)." />
+    <title>SSL Certificate Tools | Sản phẩm của BCTECHVIBE</title>
+</head>
+
+<body>
+    <div class="wrapper page-ssl">
+        <!-- Begin: Header Content -->
+        <header id="header" class="pt-6 pb-6 mb-4 text-center">
+            <div class="container">
+                <div class="header__main d-flex flex-row gap-2 justify-center items-center mb-4">
+                    <div class="header__icon">
+                        <i class="fa-solid fa-lock ssl-icon"></i>
+                    </div>
+                    <div class="header__text uppercase text-left">
+                        <h1 class="header__brand">
+                            SSL Certificate Tools
+                        </h1>
+                        <p class="header__subtitle">
+                            Sản phẩm thuộc BCTECHVIBE
+                        </p>
+                    </div>
+                </div>
+                <p class="header__meta text-center justify-center">
+                    Kiểm tra trạng thái, thông tin, thời hạn hiệu lực của chứng chỉ SSL/TLS trên website và nhiều công
+                    cụ hỗ trợ khác.
+                </p>
+                <!-- Button Theme Toggle -->
+                <!-- <div class="header__theme-toggle mt-3 d-none">
+                    <button id="btn-theme-toggle" class="btn btn__theme-toggle d-flex justify-center items-center"
+                        aria-label="Switch to Dark mode">
+                        <i class="fa-solid fa-moon icon--yellow"></i>
+                    </button>
+                    <div class="theme-tooltip px-4 py-2">
+                        <span id="theme-label">Dark Mode</span>
+                    </div>
+                </div> -->
+            </div>
+        </header>
+        <!-- End: Header Content -->
+
+        <!-- Begin: Main Content -->
+        <main id="main" class="main pb-6 mb-4">
+            <div class="container">
+                <div class="ssl-tools">
+                    <!-- ================= TOOL LIST ================= -->
+                    <div class="ssl-tools__list d-flex flex-wrap gap-6 justify-center items-center">
+                        <button id="btnToolChecker" class="ssl-tools__item js-tool-btn" data-slug="ssl-checker">
+                            <i class="fa-solid fa-lock"></i>
+                            SSL Checker
+                        </button>
+                        <button id="btnToolCsr" class="ssl-tools__item js-tool-btn" data-slug="csr-decoder">
+                            <i class="fa-solid fa-qrcode"></i>
+                            CSR Decoder
+                        </button>
+                        <button id="btnToolCert" class="ssl-tools__item js-tool-btn" data-slug="cert-decoder">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            Certificate Decoder
+                        </button>
+                        <button id="btnToolMatcher" class="ssl-tools__item js-tool-btn" data-slug="key-matcher">
+                            <i class="fa-solid fa-circle-check"></i>
+                            Certificate Key Matcher
+                        </button>
+                        <button id="btnToolConverter" class="ssl-tools__item js-tool-btn" data-slug="ssl-converter">
+                            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                            SSL Converter
+                        </button>
+                    </div>
+
+                    <!-- ================= SSL CHECKER ================= -->
+                    <section id="toolChecker" data-slug="ssl-checker"
+                        class="ssl-tools__section ssl-tools__section--checker ssl-tools__section--active mt-10 d-block">
+                        <p class="ssl-tools__description mt-3 text-justify">
+                            Sử dụng Trình kiểm tra SSL nhanh của chúng tôi để giúp bạn dễ dàng phát hiện các sự cố trong
+                            quá
+                            trình cài đặt chứng chỉ SSL.
+                            Bạn có thể kiểm tra chứng chỉ SSL trên máy chủ web để đảm bảo chứng chỉ được cài đặt đúng
+                            cách,
+                            còn hiệu lực, đáng tin cậy và không gây lỗi cho người dùng.
+                            Để sử dụng Trình kiểm tra SSL, bạn chỉ cần nhập tên máy chủ công khai của website (không hỗ
+                            trợ
+                            tên máy chủ nội bộ) vào ô bên dưới và nhấn nút <strong>Kiểm tra SSL</strong>.
+                        </p>
+                        <form id="formChecker" class="ssl-tools__form form-control mt-4 rounded-top rounded-bottom">
+                            <div class="ssl-tools__form-heading form-control__heading rounded-top text-center">
+                                <h3 class="ssl-tools__form-title form-control__heading-title">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    Kiểm tra SSL cho website
+                                </h3>
+                            </div>
+                            <div class="ssl-tools__form-body form-control__body d-flex rounded-bottom">
+                                <div class="ssl-tools__form-body--input d-flex flex-col gap-2">
+                                    <label for="inputChecker"
+                                        class="ssl-tools__form-label form-control__label">Domain</label>
+                                    <input type="text" id="inputChecker" name="hostname" placeholder="example.com"
+                                        required class="ssl-tools__input form-control__element rounded-xs"
+                                        title="Vui lòng nhập tên miền hợp lệ (ví dụ: example.com)" maxlength="253"
+                                        spellcheck="false" />
+                                </div>
+                                <button
+                                    class="ssl-tools__btn-submit form-control__btnSubmit gap-1 rounded-xs js-submit-checker"
+                                    id="btnSubmitChecker" type="submit">
+                                    <span>Kiểm tra</span>
+                                    <i class="fa-solid fa-circle-arrow-right" id="iconCheckerArrow"></i>
+                                    <i class="fa-solid fa-spinner fa-spin d-none" id="iconCheckerLoading"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- ================= SSL CSR DECODER ================= -->
+                    <section id="toolCsr" class="ssl-tools__section ssl-tools__section--csr mt-10 d-none"
+                        data-slug="csr-decoder">
+                        <div class="ssl-tools__heading">
+                            <p class="ssl-tools__description">
+                                Sử dụng công cụ CSR Decoder để giải mã Certificate Signing Request (CSR) và kiểm tra xem
+                                yêu
+                                cầu chứng chỉ có chứa đúng thông tin hay không.CSR là một khối văn bản được mã hóa, bao
+                                gồm
+                                thông tin về tổ chức đăng ký chứng chỉ SSL và
+                                khóa công khai của SSL. Do CSR được mã hóa, nên sau khi tạo xong, bạn sẽ khó kiểm tra
+                                trực
+                                tiếp nội dung bên trong.
+                                Vì các tổ chức cấp chứng chỉ (CA) sử dụng thông tin trong CSR để phát hành chứng chỉ
+                                SSL,
+                                nên việc giải mã CSR là cần thiết để đảm bảo mọi thông tin đều chính xác. Để kiểm tra
+                                CSR,
+                                bạn chỉ cần dán CSR vào ô bên dưới, công cụ CSR Decoder sẽ tự động hiển thị
+                                toàn bộ thông tin được mã hóa. CSR hợp lệ phải bắt đầu bằng
+                                <em>“-----BEGIN CERTIFICATE REQUEST-----”</em>
+                                và kết thúc bằng
+                                <em>“-----END CERTIFICATE REQUEST-----”</em>.
+                            </p>
+                            <div class="ssl-tools__code-block">
+                                <p class="ssl-tools__code-title">
+                                    Kiểm tra CSR trực tiếp trên máy tính bằng OpenSSL:
+                                </p>
+                                <code class="ssl-tools__code">
+                                    openssl req -in your_domain.csr -noout -text
+                                </code>
+                                <button class="ssl-tools__copy-btn js-copy-code"
+                                    data-clipboard-target=".ssl-tools__code">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="ssl-tools__body">
+                            <div class="ssl-tools__panel ssl-tools__panel--primary">
+                                <div class="ssl-tools__panel-header">
+                                    Dán Certificate Signing Request (CSR)
+                                    <span id="csrLoading" class="ssl-tools__loading">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<!-- spinner -->
+                                    </span>
+                                </div>
+
+                                <div class="ssl-tools__panel-body">
+                                    <textarea id="inputCsr" class="ssl-tools__textarea"
+                                        placeholder="-----BEGIN CERTIFICATE REQUEST-----"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ================= SSL CERTIFICATE DECODER ================= -->
+                    <section id="toolCert" class="ssl-tools__section ssl-tools__section--cert mt-10 d-none"
+                        data-slug="cert-decoder">
+                        <div class="ssl-tools__heading">
+                            <p class="ssl-tools__description text-justify">
+                                Sử dụng công cụ Certificate Decoder để giải mã chứng chỉ SSL được mã hóa theo định dạng
+                                PEM và kiểm tra xem chứng chỉ có chứa đúng thông tin hay không.
+                                Chứng chỉ PEM là một khối văn bản được mã hóa, chứa toàn bộ thông tin của chứng chỉ và
+                                khóa công khai. Trên máy tính Windows, bạn cũng có thể xem nhanh thông tin chứng chỉ
+                                bằng cách nhấp đúp vào tệp chứng chỉ.
+                                Để sử dụng công cụ này, bạn chỉ cần dán nội dung chứng chỉ vào ô bên dưới, Certificate
+                                Decoder sẽ tự động giải mã và hiển thị chi tiết. Chứng chỉ hợp lệ phải bắt đầu bằng
+                                <em>“-----BEGIN CERTIFICATE-----”</em>
+                                và kết thúc bằng
+                                <em>“-----END CERTIFICATE-----”</em>.
+                            </p>
+                            <div class="ssl-tools__code-block">
+                                <p class="ssl-tools__code-title">
+                                    Giải mã chứng chỉ trực tiếp trên máy tính bằng OpenSSL:
+                                </p>
+                                <code class="ssl-tools__code">
+                                    openssl x509 -in certificate.crt -text -noout
+                                </code>
+                                <button class="ssl-tools__copy-btn js-copy-code">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="ssl-tools__body">
+                            <div class="ssl-tools__panel ssl-tools__panel--primary">
+                                <div class="ssl-tools__panel-header">
+                                    Dán Certificate (Chứng chỉ SSL)
+                                </div>
+
+                                <div class="ssl-tools__panel-body">
+                                    <textarea id="inputCert" class="ssl-tools__textarea"
+                                        placeholder="-----BEGIN CERTIFICATE-----"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ================= SSL CERTIFICATE KEY MATCHER ================= -->
+                    <section id="toolMatcher" class="ssl-tools__section ssl-tools__section--matcher mt-10 d-none"
+                        data-slug="key-matcher">
+                        <div class="ssl-tools__heading">
+                            <p class="ssl-tools__description">
+                                Bạn có thể sử dụng Certificate Key Matcher (Công cụ đối chiếu khóa chứng chỉ) để kiểm
+                                tra
+                                xem private key có khớp với chứng chỉ
+                                SSL hay không, hoặc chứng chỉ có khớp với Certificate Signing Request (CSR) hay không.
+                                Khi làm việc với nhiều chứng chỉ khác nhau, bạn rất dễ bị nhầm lẫn giữa chứng chỉ nào đi
+                                kèm
+                                private key nào, hoặc CSR nào đã được dùng để tạo ra chứng chỉ. Công cụ Certificate Key
+                                Matcher giúp bạn nhanh chóng xác định các cặp này có khớp với nhau hay không.
+
+                                Công cụ hoạt động bằng cách so sánh giá trị hash của khóa công khai (public key) được
+                                trích
+                                xuất từ private key, chứng chỉ hoặc CSR, sau đó cho biết chúng có trùng khớp hay không.
+                            </p>
+                            <div class="ssl-tools__code-block">
+                                <p class="ssl-tools__code-title">
+                                    Kiểm tra khóa riêng và chứng chỉ trực tiếp trên máy tính bằng OpenSSL:
+                                </p>
+                                <div class="ssl-tools__code-group">
+                                    <code class="ssl-tools__code">
+                                        openssl pkey -in privateKey.key -pubout -outform pem | sha256sum
+                                    </code>
+                                    <button class="ssl-tools__copy-btn js-copy-code">
+                                        <i class="fa-solid fa-copy"></i>
+                                    </button>
+                                </div>
+                                <div class="ssl-tools__code-group">
+                                    <code class="ssl-tools__code">
+                                        openssl x509 -in certificate.crt -pubkey -noout -outform pem | sha256sum
+                                    </code>
+                                    <button class="ssl-tools__copy-btn js-copy-code">
+                                        <i class="fa-solid fa-copy"></i>
+                                    </button>
+                                </div>
+                                <div class="ssl-tools__code-group">
+                                    <code class="ssl-tools__code">
+                                        openssl req -in CSR.csr -pubkey -noout -outform pem | sha256sum
+                                    </code>
+                                    <button class="ssl-tools__copy-btn js-copy-code">
+                                        <i class="fa-solid fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- ====================== SSL CONVERTER ====================== -->
+                    <section id="toolConverter"
+                        class="ssl-tools__section ssl-tools__section--converter ssl-tools__detail mt-10 d-none"
+                        data-slug="ssl-converter">
+                    </section>
+
+                    <!-- ====================== RESULT SECTION CHECKER====================== -->
+                    <section id="toolResultChecker"
+                        class="result-checker ssl-tools__detail mt-10 d-none" data-slug="ssl-result"
+                        role="region" aria-live="polite" aria-busy="false" aria-labelledby="sslResultTitle"
+                        tabindex="-1" data-state="idle">
+                        <div class="ssl-tools__result-card">
+                            <div id="resultCheckerHeader" class="ssl-tools__result-header d-flex flex-row items-center justify-between gap-4">
+                                <h3 id="resultsTitleChecker" class="ssl-tools__result-title d-block">
+                                    <i class="fas fa-check-circle"></i>
+                                    Kết quả cho domain: <span id="resultDomainName"
+                                        class="ssl-tools__result-domain"></span>
+                                </h3>
+                                <button
+                                    class="btn ssl-tools__result-whois flex-row items-center justify-between gap-1 d-flex"
+                                    id="btnWhoisChecker">
+                                    <i class="fa-solid fa-address-card"></i>
+                                    Whois
+                                </button>
+                            </div>
+                            <div id="resultCheckerContent" class="ssl-tools__result-body mt-4">
+                                <!-- Result content will be injected here -->
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ====================== RESULT SECTION ====================== -->
+                    <section id="toolResult" class="ssl-tools__section--result ssl-tools__detail  mt-10 d-none"
+                        data-slug="ssl-result" role="region" aria-live="polite" aria-busy="false"
+                        aria-labelledby="sslResultTitle" tabindex="-1" data-state="idle">
+                        <div class="ssl-tools__result-card">
+                            <div class="ssl-tools__result-header d-flex flex-row items-center justify-between gap-4">
+                            </div>
+                            <div id="resultsContent" class="ssl-tools__result-body mt-4">
+                                <!-- Result content will be injected here -->
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Share Link -->
+                    <section class="ssl-tools__section--share mt-10 d-none" id="toolShareLink">
+                        <div class="ssl-tools__share-box">
+                            <div class="ssl-tools__share-header d-flex flex-row gap-1">
+                                <i class="ssl-tools__share-icon fas fa-share-nodes"></i>
+                                <strong class="ssl-tools__share-title">Chia sẻ kết quả này:</strong>
+                            </div>
+
+                            <div class="ssl-tools__share-content mt-2 d-flex flex-row items-stretch">
+                                <input type="text" id="shareLinkChecker" readonly class="ssl-tools__share-input" />
+                                <button class="ssl-tools__share-btn ssl-tools__share-button--copy gap-1"
+                                    id="btnCopyLinkChecker">
+                                    <i class="fas fa-copy"></i>
+                                    <span>Copy</span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ====================== ERROR SECTION ====================== -->
+                    <section class="ssl-tools__section--error mt-10 d-none" id="toolError">
+                        <div class="ssl-tools__error-card  mt-3">
+                            <div class="ssl-tools__error-header d-flex flex-row items-center gap-2">
+                                <i class="fas fa-exclamation-triangle ssl-tools__error-icon"></i>
+                                <h3 id="toolErrorTitle" class="ssl-tools__error-title">Kiểm tra SSL thất bại</h3>
+                            </div>
+                            <p id="toolErrorMessage" class="ssl-tools__error-message"></p>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </main>
+        <!-- End: Main Content -->
+
+        <!-- Begin: Footer Content -->
+        <footer id="footer" class="pt-6 pb-6 mt-4">
+            <div class="container">
+                <div class="footer__main">
+                    <!-- Section: Friends -->
+                    <section class="footer__friends">
+                        <h3 class="footer__title">
+                            Bạn bè & đối tác
+                        </h3>
+                        <div class="footer__friend--list">
+                            <a href="https://tino.vn?php=3707" target="_blank" rel="noopener noreferrer"
+                                class="btn footer__friends--item">Tino Group</a>
+                            <a href="https://tino.vn/blog?php=3707" target="_blank" rel="noopener noreferrer"
+                                class="btn footer__friends--item">Tino Blog</a>
+                            <a href="https://duyphuong.id.vn/" target="_blank" rel="noopener noreferrer"
+                                class="btn footer__friends--item">Duy Phương</a>
+                            <a href="https://itxin.io.vn/" target="_blank" rel="noopener noreferrer"
+                                class="btn footer__friends--item">Đức Việt</a>
+                        </div>
+                    </section>
+                    <!-- Section: Note -->
+                    <section class="footer__note">
+                        <h3 class="footer__title">
+                            Chia sẻ & Góp ý
+                        </h3>
+                        <div class="footer__note--content">
+                            <p class="footer__message">
+                                Cứ thoải mái chia sẻ lại nội dung của <a href="https://bctechvibe.io.vn" target="_blank"
+                                    rel="noopener">tôi</a> (nhớ ghi nguồn nha ^^). Nếu bài viết giúp bạn giải quyết được
+                                điều gì đó, tặng tôi
+                                <a href="https://me.momo.vn/bctechvibe" target="_blank" rel="noopener noreferrer">ly cà
+                                    phê ☕</a> cho ấm bụng nhé 🙂.
+                            </p>
+                            <p class="footer__sponsor">
+                                Hosting/VPS được tài trợ bởi <a href="https://tino.vn?php=3707" target="_blank"
+                                    rel="noopener noreferrer">TINO GROUP</a> – một
+                                trong những tập đoàn công nghệ hàng đầu Việt Nam.
+                            </p>
+                        </div>
+                    </section>
+                    <!-- Section: Trusted -->
+                    <section class="footer__trusted">
+                        <h3 class="footer__title">
+                            Được tin tưởng bởi
+                        </h3>
+                        <div class="footer__trusted--list d-flex flex-wrap gap-4">
+                            <a href="https://tino.vn?php=3707" target="_blank" rel="noopener noreferrer"
+                                class="btn footer__trusted--item">
+                                <img src="../../public/assets/images/layout/footer/logo-tino.png" alt="Tino Group"
+                                    class="footer__trusted--img">
+                            </a>
+                            <a href="https://transparencyreport.google.com/safe-browsing/search?url=bctechvibe.io.vn&hl=en"
+                                target="_blank" rel="noopener noreferrer" class="btn footer__trusted--item">
+                                <img src="../../public/assets/images/layout/footer/google-safe-browsing.webp"
+                                    alt="Google Safe Browsing" class="footer__trusted--img">
+                            </a>
+                            <a href="https://sitecheck.sucuri.net/results/bctechvibe.io.vn" target="_blank"
+                                rel="noopener noreferrer" class="btn footer__trusted--item">
+                                <img src="../../public/assets/images/layout/footer/sucuri.png" alt="Sucuri"
+                                    class="footer__trusted--img">
+                            </a>
+                        </div>
+                    </section>
+                </div>
+                <!-- Button Back to top -->
+                <div class="footer__backtop text-center pt-8">
+                    <a class="footer__btn--go-top" aria-label="Go to top" href="#top" rel="noopener noreferrer">
+                        <span>Back To Top</span>
+                        <i class="fa-solid fa-circle-arrow-up"></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
+        <!-- End: Footer Content -->
+    </div>
+    <script src="../../src/js/pages/ssl-tools.page.js" type="module"></script>
+</body>
+
+</html>

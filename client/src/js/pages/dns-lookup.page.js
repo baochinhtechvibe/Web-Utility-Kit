@@ -1,7 +1,38 @@
 // =================================//
 //  DNS LOOKUP - MAIN JAVASCRIPT
 //==================================//
+import {
+    /* dom.js */
+    setDisplay,
+    showElements,
+    toggleLoading,
+    showError,
+    $,
+    $$,
 
+    /* network.js */
+    isIP,
+    isIPv6,
+    getPTRQueryName,
+    normalizeRecordType,
+    normalizeHostnameInput,
+
+    /* format.js */
+    truncateByWords,
+    stripLegalSuffix,
+    formatTTL,
+    formatExpirationDate,
+
+    /* geo.js */
+    getCountryCode,
+    getCountryFlag,
+
+    /* org.js */
+    shouldKeepFullName,
+
+    /* url.js */
+    getIPInfoLink
+} from "../utils/index.js";
 // =================================//
 //  CONFIG & GLOBAL STATE
 //==================================//
@@ -16,6 +47,7 @@ const searchIcon = document.getElementById("searchIcon");
 const loadingIcon = document.getElementById("loadingIcon");
 const resultsSection = document.getElementById("resultsSection");
 const errorSection = document.getElementById("errorSection");
+const errorMessage = document.getElementById("errorMessage");
 const tableWrapper = document.getElementById("tableWrapper");
 const resultsTableHead = document.getElementById("resultsTableHead");
 const resultsTableBody = document.getElementById("resultsTableBody");
@@ -109,52 +141,7 @@ const BLACKLIST_PROVIDERS = [
     { host: "hil2.habeas.com", level: "Low" },                  // HIL2
 ];
 
-// ========================================
-// ISP / ORG DISPLAY NORMALIZATION
-// ========================================
-const LEGAL_SUFFIXES = [
-    "joint stock company",
-    "company limited",
-    "limited",
-    "co., ltd",
-    "co ltd",
-    "ltd",
-    "jsc",
-    "corp",
-    "corporation",
-    "group",
-    "inc",
-    "inc.",
-    "plc",        // Public limited company
-    "llc",        // Limited liability company
-    "llp",        // Limited liability partnership
-    "gmbh",       // Đức / Germany
-    "sa",         // Société Anonyme (Pháp / Châu Âu)
-    "ag",         // Aktiengesellschaft (Germany, Switzerland)
-    "pte",        // Singapore private company
-    "srl",        // Italy / Romania / Latin America
-    "spa",        // Italy
-    "oy",         // Finland
-    "ab",         // Sweden / Sweden Ltd.
-    "as",         // Norway / Estonia
-    "bv",         // Netherlands / Dutch
-    "kk",         // Japan / Kabushiki Kaisha
-    "oyj",        // Finland
-    "nv",         // Belgium / Netherlands
-    "sae",        // Spain
-    "sas",        // France
-    "gk",         // Japan / Godo Kaisha
-];
 
-const KEEP_FULL_NAME_KEYWORDS = [
-    "internet network information center",
-    "vnnic",
-    "apnic",
-    "ripe",
-    "arin",
-    "lacnic",
-    "nic"
-];
 
 // Global flags / state
 let blacklistScrollbarFixed = false;
@@ -175,97 +162,6 @@ function getDNSServerName(serverId) {
     return serverNames[serverId] || serverId.toUpperCase();
 }
 
-
-function isIP(value) {
-    return /^(\d{1,3}\.){3}\d{1,3}$/.test(value);
-}
-
-function isIPv6(value) {
-    return value.includes(":");
-}
-
-function detectInputType(value) {
-    if (isIP(value)) return "IP";
-    if (isIPv6(value)) return "IP";
-    return "DOMAIN";
-}
-
-function expandIPv6(ip) {
-    // expand :: → đầy đủ 8 block
-    const parts = ip.split("::");
-    let head = parts[0].split(":").filter(Boolean);
-    let tail = parts[1] ? parts[1].split(":").filter(Boolean) : [];
-
-    const missing = 8 - (head.length + tail.length);
-    const zeros = Array(missing).fill("0000");
-
-    const full = [...head, ...zeros, ...tail]
-        .map(p => p.padStart(4, "0"));
-
-    return full.join("");
-}
-
-function getPTRQueryName(ip) {
-    if (isIP(ip)) {
-        // IPv4
-        return ip.split(".").reverse().join(".") + ".in-addr.arpa";
-    }
-
-    if (isIPv6(ip)) {
-        const expanded = expandIPv6(ip);
-        return expanded
-            .split("")
-            .reverse()
-            .join(".") + ".ip6.arpa";
-    }
-
-    return ip;
-}
-
-function normalizeRecordType(hostname, type) {
-    if (type !== "ALL") return type;
-
-    return detectInputType(hostname) === "IP"
-        ? "PTR"
-        : "ALL";
-}
-
-// ======== String / formatting helpers ========
-
-function truncateString(str, maxLength = 64) {
-    if (!str || str.length <= maxLength) return str;
-    return str.substring(0, maxLength) + "...";
-}
-
-function truncateByWords(text = "", maxWords = 3) {
-    const words = text.trim().split(/\s+/);
-
-    // <= maxWords → giữ nguyên, KHÔNG ...
-    if (words.length <= maxWords) {
-        return text.trim();
-    }
-
-    // > maxWords → cắt + ...
-    return words.slice(0, maxWords).join(" ") + " ...";
-}
-
-function stripLegalSuffix(name = "") {
-    let clean = name.toLowerCase();
-
-    // loại bỏ dấu chấm / comma
-    clean = clean.replace(/[.,]/g, "");
-
-    LEGAL_SUFFIXES.forEach(suffix => {
-        clean = clean.replace(new RegExp(`\\b${suffix}\\b`, "gi"), "");
-    });
-
-    return clean.replace(/\s+/g, " ").trim();
-}
-
-function shouldKeepFullName(name = "") {
-    const lower = name.toLowerCase();
-    return KEEP_FULL_NAME_KEYWORDS.some(k => lower.includes(k));
-}
 
 // ======== ISP / ORG normalization ========
 function getISPDisplay(record) {
@@ -293,48 +189,6 @@ function getISPDisplay(record) {
         .join(" ");
 }
 
-// ======== Country / Geo helpers ========
-/**
- * Get country code from country name
- */
-function getCountryCode(countryName) {
-    const countryMap = {
-        "United States": "us",
-        Vietnam: "vn",
-        Singapore: "sg",
-        Japan: "jp",
-        China: "cn",
-        "United Kingdom": "gb",
-        Germany: "de",
-        France: "fr",
-        Australia: "au",
-        Canada: "ca",
-        India: "in",
-        Brazil: "br",
-        Russia: "ru",
-        "South Korea": "kr",
-        Netherlands: "nl",
-        Switzerland: "ch",
-        Sweden: "se",
-        Spain: "es",
-        Italy: "it",
-        Poland: "pl",
-    };
-
-    return countryMap[countryName] || "";
-}
-
-/**
- * Get country flag emoji or image
- */
-function getCountryFlag(countryCode) {
-    if (!countryCode) return "";
-
-    // Using flag-icons API
-    const flagUrl = `https://flagcdn.com/24x18/${countryCode.toLowerCase()}.png`;
-    return `<img src="${flagUrl}" alt="${countryCode}" class="country-flag" onerror="this.style.display='none'">`;
-}
-
 // ======== DNS / Protocol helpers ========
 /**
  * Get type badge HTML
@@ -342,14 +196,6 @@ function getCountryFlag(countryCode) {
 function getTypeBadge(type) {
     const typeClass = `type-${type.toLowerCase()}`;
     return `<span class="type-badge ${typeClass}">${type}</span>`;
-}
-
-/**
- * Format TTL value - Display raw seconds
- */
-function formatTTL(ttl) {
-    if (!ttl && ttl !== 0) return "N/A";
-    return ttl; // Return raw seconds value
 }
 
 /**
@@ -408,52 +254,6 @@ function getDNSSECStatusClass(status) {
     }
 }
 
-/**
- * Format expiration date
- */
-function formatExpirationDate(dateString) {
-    if (!dateString || dateString === "0001-01-01T00:00:00Z") {
-        return "N/A";
-    }
-
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = date - now;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    const formatted = date.toLocaleString('vi-VN', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    });
-
-    let statusClass = "expires-ok";
-    let statusText = "";
-
-    if (diffDays < 0) {
-        statusClass = "expires-expired";
-        statusText = "⚠️ Expired";
-    } else if (diffDays <= 7) {
-        statusClass = "expires-warning";
-        statusText = `⚠️ Expires in ${diffDays} days`;
-    } else if (diffDays <= 30) {
-        statusClass = "expires-soon";
-        statusText = `Expires in ${diffDays} days`;
-    } else {
-        statusText = `Valid for ${diffDays} days`;
-    }
-
-    return `
-        <div class="expiration-info">
-            <div class="expiration-date">${formatted}</div>
-            <div class="expiration-status ${statusClass}">${statusText}</div>
-        </div>
-    `;
-}
-
 // ======== URL / Share helpers ========
 /**
  * Generate share link
@@ -463,13 +263,6 @@ function generateShareLink(hostname, type, server) {
     return `${baseUrl}?host=${encodeURIComponent(
         hostname
     )}&type=${type}&server=${server}`;
-}
-
-/**
- * Get IP info link
- */
-function getIPInfoLink(ip) {
-    return `https://check-host.net/ip-info?host=${ip}`;
 }
 
 /**
@@ -539,9 +332,7 @@ function cleanupBlacklistStream() {
 }
 
 function performBlacklistStream(ip) {
-    let blacklistTotal = BLACKLIST_PROVIDERS.length;
-    let blacklistListed = 0;
-    errorSection.style.display = "none";
+    setDisplay(errorSection, "none");
     resultsTableBody.innerHTML = "";
 
     const rowMap = {};
@@ -620,7 +411,7 @@ function performBlacklistStream(ip) {
     blacklistEventSource.onerror = () => {
         blacklistEventSource.close();
         blacklistEventSource = null;
-        hideLoading();
+        toggleLoading(btnResolve, searchIcon, loadingIcon, false);
     };
 }
 
@@ -681,64 +472,10 @@ function resetUI() {
 
 }
 
-function setDisplay(el, mode = "none") {
-    if (!el) return;
-
-    const displayClasses = ["d-none", "d-block", "d-flex", "d-inline", "d-inline-block"];
-
-    // Xóa tất cả class display cũ
-    el.classList.remove(...displayClasses);
-
-    // Add class mới nếu có
-    if (mode) {
-        el.classList.add(`d-${mode}`);
-    }
-}
-
-function showElements(mode, ...els) {
-    els.forEach(el => setDisplay(el, mode));
-}
 
 function removeDNone(el) {
     if (!el) return;
     el.classList.remove("d-none");
-}
-
-function setResolveButtonLoading(isLoading) {
-    btnResolve.disabled = isLoading;
-    searchIcon.style.display = isLoading ? "none" : "inline-block";
-    loadingIcon.style.display = isLoading ? "inline-block" : "none";
-}
-
-
-/**
- * Show loading state
- */
-function showLoading() {
-    btnResolve.disabled = true;
-    searchIcon.style.display = "none";
-    loadingIcon.style.display = "inline-block";
-}
-
-/**
- * Hide loading state
- */
-function hideLoading() {
-    btnResolve.disabled = false;
-    searchIcon.style.display = "inline-block";
-    loadingIcon.style.display = "none";
-}
-
-/**
- * Show error message
- */
-function showError(message) {
-    const errorMessage = document.getElementById("errorMessage");
-    errorMessage.textContent = message;
-    setDisplay(errorSection, "block");
-    setDisplay(shareLinkSection, "none");
-
-    errorSection.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function showCopyFeedback(icon, type) {
@@ -947,7 +684,9 @@ function displayResults(data) {
         showElements("none", btnWhois, resultsTitle, resultsSection, shareLinkSection);
         btnWhois.onclick = null;
         setDisplay(errorSection, "block");
-        showError(data?.message || "Không thể tra cứu DNS");
+        showError(errorSection, errorMessage, data?.message || "Không thể tra cứu DNS", [
+            shareLinkSection, resultsSection
+        ]);
         return;
     }
 
@@ -956,6 +695,8 @@ function displayResults(data) {
     const type = query.type;
     const resultsMessage = data.message;
     const server = query.server;
+
+    hostnameInput.value = hostname;
 
     const serverDisplayName = getDNSServerName(server);
 
@@ -1065,7 +806,9 @@ function displayResults(data) {
     // Check if we have actual records
     if (!actualRecords || actualRecords.length === 0) {
         setDisplay(tableWrapper, "none");
-        showError(resultsMessage);
+        showError(errorSection, errorMessage, resultsMessage, [
+            shareLinkSection, resultsSection
+        ])
         resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
         return;
     }
@@ -1123,7 +866,9 @@ async function handleBlacklistSubmit(hostname, server) {
     }
 
     removeDNone(resultsTitle);
-    shareLink.value = generateShareLink(hostname, "BLACKLIST", server);
+    const cleanHostname = normalizeHostnameInput(hostname);
+    hostnameInput.value = cleanHostname;
+    shareLink.value =   (cleanHostname, "BLACKLIST", server);
     showElements("block", shareLinkSection, resultsSection, tableWrapper);
     tableWrapper.style.maxHeight = "650px";
     tableWrapper.style.overflowY = "auto";
@@ -1187,7 +932,7 @@ function displayDNSSECResults(data) {
     resultsTableBodyRRSIG.innerHTML = "";
 
     if (!dnssec || !Array.isArray(dnssec.records)) {
-        showError("Không có dữ liệu DNSSEC");
+        showError(errorSection, errorMessage, "Không có dữ liệu DNSSEC", [shareLinkSection, resultsSection]);
         return;
     }
 
@@ -1367,15 +1112,16 @@ form.addEventListener("submit", async (e) => {
     // Reset UI && BlacklistStream();
     cleanupBlacklistStream();
     resetUI();
-
-    const hostname = hostnameInput.value.trim();
+    const rawHostname = hostnameInput.value.trim();
+    const hostname = normalizeHostnameInput(rawHostname);
+    hostnameInput.value = hostname;
     if (!hostname) return;
 
     const server = dnsServerSelect.value;
     let type = normalizeRecordType(hostname, recordTypeSelect.value);
 
     updateURL(hostname, server, type);
-    showLoading();
+    toggleLoading(btnResolve, searchIcon, loadingIcon, true);
 
     try {
         if (type === "BLACKLIST") {
@@ -1387,9 +1133,9 @@ form.addEventListener("submit", async (e) => {
         displayResults(result);
     } catch (error) {
         const msg = error?.message || "Không thể tra cứu DNS. Vui lòng thử lại.";
-        showError(msg);
+        showError(errorSection, errorMessage, msg, [shareLinkSection, resultsSection]);
     } finally {
-        hideLoading();
+        toggleLoading(btnResolve, searchIcon, loadingIcon, false);
     }
 });
 

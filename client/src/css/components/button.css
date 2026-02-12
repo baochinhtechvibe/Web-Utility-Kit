@@ -20,11 +20,8 @@
         border-radius: var(--radius-md);
     }
 }
-@media (min-width: 640px) {
+@media (min-width: 680px) {
     .btn {
         font-size: var(--text-lg);
     }
-}
-@media (min-width: 640px) {
-
 }

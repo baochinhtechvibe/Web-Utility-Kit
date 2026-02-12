@@ -31,6 +31,7 @@
 .text-left { text-align: left; }
 .text-center { text-align: center; }
 .text-right { text-align: right; }
+.text-justify { text-align: justify; }
 
 /* Font Weight */
 .font-normal { font-weight: var(--font-normal); }
@@ -70,6 +71,7 @@
 .overflow-auto { overflow: auto; }
 
 /* Border Radius */
+.rounded-xs { border-radius: var(--radius-xs); }
 .rounded-sm { border-radius: var(--radius-sm); }
 .rounded-md { border-radius: var(--radius-md); }
 .rounded-lg { border-radius: var(--radius-lg); }

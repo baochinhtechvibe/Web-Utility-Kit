@@ -1,0 +1,505 @@
+.page-ssl .ssl-icon {
+    background: var(--gradient-gold-metallic);
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    background-clip: text;
+    color: transparent;
+
+    line-height: var(--leading-tight);
+    padding: 0.125rem;
+}
+
+.ssl-tools__list .ssl-tools__item {
+    padding: var(--space-2);
+    border: var(--border);
+    border-radius: var(--radius-xs);
+
+    color: var(--ssl-tool-primary);
+
+    transition: all var(--transition-base);
+}
+
+.ssl-tools__list .ssl-tools__item:hover {
+    border-color: var(--ssl-tool-primary);
+}
+
+/* Panel animation */
+
+.ssl-tools__section {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+    pointer-events: none;
+
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s ease;
+}
+
+.ssl-tools__section--active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.ssl-tools__list .ssl-tools__item.active {
+    background-color: var(--ssl-tool-secondary);
+    border-color: var(--ssl-tool-primary);
+    color: var(--white);
+}
+
+/* ======================
+    SSL CHECKER TOOL
+ ====================== */
+.ssl-tools__form {
+    box-shadow: var(--shadow-sm);
+}
+
+.ssl-tools__form .ssl-tools__form-heading {
+    background-color: var(--ssl-tool-primary);
+}
+
+.ssl-tools__form .ssl-tools__input:focus {
+    box-shadow: var(--shadow-blue);
+}
+
+.ssl-tools__form .ssl-tools__btn-submit {
+    position: relative;
+    width: 100%;
+    background-color: var(--ssl-tool-primary);
+    color: var(--white);
+    overflow: hidden;
+
+    font-weight: var(--font-bold);
+
+    transition: all var(--transition-base);
+}
+
+/* Lớp phủ */
+.ssl-tools__form .ssl-tools__btn-submit::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--overlay-dark);
+    opacity: 0;
+    transition: all var(--transition-base);
+}
+
+.ssl-tools__form .ssl-tools__btn-submit:hover::before {
+    opacity: 1;
+}
+
+.ssl-tools__form .ssl-tools__btn-submit:hover {
+    transform: translateY(-6px);
+}
+
+/* ======================
+    RESULT CHECKER TOOL
+ ====================== */
+
+ .ssl-tools__result-body tr {
+    margin-top: var(--space-1);
+    margin-bottom: var(--space-1);
+ }
+
+.result-checker .ssl-tools__result-header {
+    padding-bottom: var(--space-3);
+    border-bottom: var(--border);
+}
+
+.result-checker .ssl-tools__result-title {
+    color: var(--text-result-title);
+}
+
+.result-checker .ssl-tools__result-whois {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: var(--padding-md);
+    background-color: unset;
+    border-color: var(--bg-btn-whois);
+    font-weight: var(--font-bold);
+    text-transform: uppercase;
+    color: var(--bg-btn-whois);
+    transition: transform var(--transition-base);
+}
+
+.result-checker .ssl-tools__result-whois:hover {
+    background-color: var(--bg-btn-whois);
+    color: var(--white);
+    transform: translateY(-6px);
+}
+
+.result-checker__overview-title {
+    color: var(--ssl-tool-primary);
+    font-size: var(--text-lg);
+}
+
+.result-checker__badge {
+    background-color: var(--ssl-checker-bg-badge);
+    padding: var(--padding-base);
+    font-weight: var(--font-bold);
+}
+
+.result-checker__badge--valid {
+    color: var(--ssl-checker-valid);
+}
+
+.result-checker__badge--warning {
+    color: var(--ssl-checker-warning);
+}
+
+.result-checker__badge--critical {
+    color: var(--ssl-checker-critical);
+}
+
+.result-checker__badge-icon {
+    display: inline-block;
+
+    width: 16px;
+    height: 16px;
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    vertical-align: middle;
+}
+
+.result-checker__badge-icon--valid {
+    background-image: url("../../../public/assets/images/tools/ssl/summary_icon/valid.png");
+}
+
+.result-checker__badge-icon--warning {
+    background-image: url("../../../public/assets/images/tools/ssl/summary_icon/warning.png");
+}
+
+.result-checker__badge-icon--critical {
+    background-image: url("../../../public/assets/images/tools/ssl/summary_icon/critical.png");
+}
+
+
+.result-checker__table {
+    padding: var(--space-4) 0;
+    margin-bottom: var(--space-4);
+}
+
+.result-checker__icon {
+    width: 36px;
+    height: 36px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 28px 28px;
+}
+
+.result-checker__icon.result-checker__icon--result {
+    display: inline-block;
+    background-image: url("/client/public/assets/images/tools/ssl/summary_icon/result.png");
+
+}
+
+.result-checker__icon.result-checker__icon--resolve {
+    background-image: url(../../../public/assets/images/tools/ssl/summary_icon/resolved.png);
+}
+
+.result-checker__icon.result-checker__icon--server {
+    background-image: url(../../../public/assets/images/tools/ssl/summary_icon/server-type.png);
+}
+
+.result-checker__icon.result-checker__icon--issuer {
+    background-image: url(../../../public/assets/images/tools/ssl/summary_icon/issued.png);
+}
+
+.result-checker__icon.result-checker__icon--tls {
+    background-image: url(../../../public/assets/images/tools/ssl/summary_icon/tsl-version.png);
+}
+
+.result-checker__icon.result-checker__icon--trusted-ok {
+    background-image: url(../../../public/assets/images/tools/ssl/summary_icon/trusted-ok.png);
+}
+
+.result-checker__icon.result-checker__icon--trusted-issue {
+    background-image: url(../../../public/assets/images/tools/ssl/summary_icon/critical.png);
+}
+
+.result-checker__icon.result-checker__icon--expiryDay-ok {
+    background-image: url(../../../public/assets/images/tools/ssl/summary_icon/day_left_ok.png);
+}
+
+.result-checker__icon.result-checker__icon--expiryDay-warning {
+    background-image: url(../../../public/assets/images/tools/ssl/summary_icon/day_left_warning.png);
+}
+
+.result-checker__icon.result-checker__icon--expiryDay-critical {
+    background-image: url(../../../public/assets/images/tools/ssl/summary_icon/day_left_critical.png);
+}
+
+.result-checker__icon.result-checker__icon--hostnameok {
+    background-image: url(../../../public/assets/images/tools/ssl/summary_icon/hostname_ok.png);
+}
+
+.result-checker__icon.result-checker__icon--hostnamefalse {
+    background-image: url(../../../public/assets/images/tools/ssl/summary_icon/critical.png);
+}
+
+.result-checker__message .result-checker__message--tlsStatus.good {
+    color: var(--ssl-checker-good);
+}
+
+.result-checker__message .result-checker__message--expiry.ok,
+.result-checker__message .result-checker__message--tlsStatus.ok {
+    color: var(--ssl-checker-ok);
+}
+
+.result-checker__message .result-checker__message--expiry.warning,
+.result-checker__message .result-checker__message--tlsStatus.weak {
+    color: var(--ssl-checker-weak);
+}
+
+.result-checker__message .result-checker__message--tlsStatus.bad {
+    color: var(--ssl-checker-bad);
+}
+
+.result-checker__message .result-checker__message--tlsStatus.insecure {
+    color: var(--ssl-checker-insecure);
+}
+
+.result-checker__message-trust-issues {
+    color: var(--ssl-checker-insecure);
+}
+
+.result-checker__message-trust-issues .btnRenewSSL {
+    padding: var(--space-2) var(--space-2);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    background-color: var(--ssl-tool-primary);
+    color: var(--white);
+    transition: all var(--transition-base);
+    opacity: 0.7;
+}
+
+.result-checker__message-trust-issues .btnRenewSSL:hover {
+    /* color: var(--ssl-checker-btn-hover); */
+    opacity: 1;
+}
+
+.result-checker__message-trust-issues.cert_expired {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-1);
+}
+
+.result-checker .cert-card__wrapper {
+    flex-direction: column;
+    width: 100%
+}
+
+.result-checker .cert-card__img-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.result-checker .cert-card__img {
+    display: flex;
+    flex-shrink: 0;
+    height: 80px;
+    width: 80px;
+}
+
+.result-checker .cert-card__content {
+    width: 100%;
+    padding: var(--padding-xl);
+    border: var(--border);
+}
+
+.result-checker .cert-card__content.domain {
+    border-color: var(--ssl-checker-domain-level);
+}
+
+.result-checker .cert-card__content.intermediate {
+    border-color: var(--ssl-checker-intermediate-level);
+}
+
+.result-checker .cert-card__content.root {
+    border-color: var(--ssl-checker-root-level);
+}
+
+.result-checker .cert-card__level {
+    padding-bottom: var(--space-2);
+    margin-bottom: var(--space-4);
+    border-bottom: var(--border);
+
+    text-align: center;
+}
+
+.result-checker .cert-card__level h4 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+}
+
+.result-checker .cert-card__level-domain {
+    color: var(--ssl-checker-domain-level);
+}
+
+.result-checker .cert-card__level-intermediate {
+    color: var(--ssl-checker-intermediate-level);
+}
+
+.result-checker .cert-card__level-root {
+    color: var(--ssl-checker-root-level);
+}
+
+.result-checker .cert-card__info {
+    display: flex;
+    flex-direction: column;
+}
+
+.result-checker .cert-card__info .cert-card__value {
+    margin-left: var(--space-4);
+    word-break: break-word;
+}
+
+.result-checker .cert-card__info.cert-card__common-name .cert-card__value {
+    font-weight: var(--font-bold);
+}
+
+.result-checker .cert-card__not-before,
+.result-checker .cert-card__not-after.valid {
+    color: var(--ssl-checker-valid);
+}
+
+.result-checker .cert-card__not-after.warning {
+    color: var(--ssl-checker-warning);
+}
+
+.result-checker .cert-card__not-after.expired {
+    color: var(--ssl-checker-expired);
+}
+
+.result-checker .cert-card__issuer {
+    padding-top: var(--space-4);
+    margin-top: var(--space-2);
+    border-top: var(--border);
+}
+
+.result-checker .cert-card__issuer .cert-card__value {
+    font-weight: var(--font-bold);
+}
+
+.ssl-tools__share-box {
+    padding: var(--space-4) var(--space-3);
+    border: var(--border);
+    border-style: dashed;
+    border-color: var(--border-share-link);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-share-link);
+}
+
+.ssl-tools__share-box .ssl-tools__share-header {
+    color: var(--ssl-tool-primary);
+}
+
+.ssl-tools__share-box .ssl-tools__share-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: var(--padding-lg);
+    border: var(--border);
+    border-right: none;
+    border-color: var(--ssl-tool-primary);
+    border-top-left-radius: var(--radius-md);
+    border-bottom-left-radius: var(--radius-md);
+    font-size: var(--text-base);
+    color: var(--ssl-tool-primary);
+}
+
+.ssl-tools__share-box .ssl-tools__share-btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-3) var(--space-2);
+    border: var(--border);
+    border-left: none;
+    border-color: var(--ssl-tool-primary);
+    border-top-right-radius: var(--radius-md);
+    border-bottom-right-radius: var(--radius-md);
+    background-color: var(--ssl-tool-primary);
+    color: var(--white);
+    transition: all var(--transition-base);
+}
+
+@media (min-width: 480px) {
+    .result-checker .cert-card__wrapper {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .result-checker .cert-card__img-wrapper {
+        width: auto;
+    }
+
+    .result-checker .cert-card__content {
+        flex-grow: 1;
+    }
+}
+
+@media (min-width: 680px) {
+    .result-checker .ssl-tools__result-title {
+        font-size: var(--text-lg);
+    }
+    .result-checker {
+        padding: 0 var(--space-12);
+    }
+
+    .result-checker .cert-card__info {
+        flex-direction: unset;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .result-checker .cert-card__info .cert-card__label {
+        width: 150px;
+        flex-shrink: 0;
+    }
+
+    .result-checker .cert-card__info .cert-card__value {
+        flex-grow: 1;
+        margin-left: 0;
+
+    }
+}
+
+@media (min-width: 769px) {
+    .result-checker .cert-card__img {
+        height: 128px;
+        width: 128px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ssl-tools .form-control__body {
+        flex-wrap: nowrap;
+        flex-direction: unset;
+        justify-content: space-between;
+    }
+
+    .ssl-tools .form-control__body .ssl-tools__form-body--input {
+        flex: 0 0 auto;
+        width: 82%
+    }
+
+    .result-checker .ssl-tools__result-title {
+        font-size: var(--text-xl);
+    }
+
+    .ssl-tools .form-control__body .ssl-tools__btn-submit {
+        flex: 0 0 auto;
+        width: 15%;
+        align-self: flex-end;
+        font-size: var(--text-md);
+    }
+}

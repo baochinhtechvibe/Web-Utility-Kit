@@ -1,0 +1,93 @@
+/* ==================================================
+   FORM CONTROL COMPONENT CSS
+   ===================================================
+*/
+
+.form-control {
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-md);
+}
+
+.form-control__heading {
+    text-align: center;
+    padding: var(--space-4);
+    border-bottom: 0px;
+    border-top-left-radius: var(--radius-md);
+    border-top-right-radius: var(--radius-md);
+}
+
+.form-control__heading-title {
+    font-weight: var(--font-bold);
+    color: var(--white);
+}
+
+.form-control__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding: var(--space-6);
+    border: var(--border);
+    border-top: 0;
+
+    background-color: var(--bg-tool-card-body);
+    border-bottom-left-radius: var(--radius-md);
+    border-bottom-right-radius: var(--radius-md);
+}
+
+.form-control__element {
+    padding: var(--space-3) var(--space-2);
+    border: var(--border);
+    font-size: var(--text-base);
+    font-family: var(--font-sans);
+    line-height: var(--leading-normal);
+    color: var(--text-form-control);
+    transition: all var(--transition-base);
+}
+
+.form-control__element:focus {
+    outline: none;
+}
+
+.form-control__label {
+    font-size: var(--text-md);
+    font-family: var(--font-serif);
+    font-weight: var(--font-bold);
+    color: var(--text-heading);
+}
+
+.form-control__btnSubmit {
+    width: 100%;
+    background-color: var(--dns-tool-primary);
+    padding: var(--padding-lg);
+    font-family: var(--font-sans);
+    border-radius: var(--radius-sm);
+    line-height: var(--leading-normal);
+    font-weight: var(--font-medium);
+    transition: all var(--transition-base);
+}
+
+@media (min-width: 1024px) {
+    /* .form-control__body {
+        flex-wrap: wrap;
+        flex-direction: unset;
+        justify-content: space-between;
+
+        padding: var(--space-8);
+    } */
+
+    .form-control__heading-title {
+        font-size: var(--text-2xl);
+    }
+
+    .form-control__label {
+        font-size: var(--text-lg);
+    }
+
+    .form-control__element {
+        font-size: var(--text-md);
+    }
+
+    .form-control__btnSubmit {
+        align-self: flex-end;
+    }
+}
