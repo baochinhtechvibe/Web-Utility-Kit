@@ -14,12 +14,6 @@ import "time"
    TLS Scan Result
 =========================== */
 
-type TLSScanResult struct {
-	Version string `json:"version"`
-	Cipher  string `json:"cipher"`
-	Secure  bool   `json:"secure"`
-}
-
 type CertLevel string
 
 /* ===========================
@@ -118,24 +112,11 @@ type SSLCheckResponse struct {
 	TrustIssues []TrustIssue `json:"trust_issue,omitempty"`
 	TrustReason string       `json:"trust_reason,omitempty"`
 
-	OCSP     *OCSPDetail `json:"ocsp,omitempty"`
-	OCSPGood bool        `json:"ocsp_good"`
-
 	/* ---- TLS ---- */
-
-	TLSVersion string          `json:"tls_version"`
-	TLSScan    []TLSScanResult `json:"tls_scan"`
-
-	/* ---- Grade */
-
-	Grade  string `json:"grade"`
-	Status string `json:"status"`
+	TLSVersion string `json:"tls_version"`
 
 	/* ---- Chain */
-
 	CertChain []CertDetail `json:"cert_chain"`
-
-	HasRoot bool `json:"has_root"`
 
 	/* ---- Meta */
 

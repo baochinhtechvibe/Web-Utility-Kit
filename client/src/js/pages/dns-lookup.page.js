@@ -7,8 +7,7 @@ import {
     showElements,
     toggleLoading,
     showError,
-    $,
-    $$,
+    setElementsEnabled,
 
     /* network.js */
     isIP,
@@ -1111,6 +1110,7 @@ form.addEventListener("submit", async (e) => {
 
     // Reset UI && BlacklistStream();
     cleanupBlacklistStream();
+    setElementsEnabled([hostnameInput, dnsServerSelect, recordTypeSelect], false);
     resetUI();
     const rawHostname = hostnameInput.value.trim();
     const hostname = normalizeHostnameInput(rawHostname);
@@ -1136,6 +1136,7 @@ form.addEventListener("submit", async (e) => {
         showError(errorSection, errorMessage, msg, [shareLinkSection, resultsSection]);
     } finally {
         toggleLoading(btnResolve, searchIcon, loadingIcon, false);
+        setElementsEnabled([hostnameInput, dnsServerSelect, recordTypeSelect], true);
     }
 });
 

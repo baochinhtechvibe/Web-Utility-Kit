@@ -31,17 +31,6 @@ type ExpiredCertInfo struct {
 	DaysAgo int64
 }
 
-func detectHasRootFromChain(
-	chain []models.CertDetail,
-) bool {
-
-	if len(chain) == 0 {
-		return false
-	}
-
-	return chain[len(chain)-1].Level == models.CertLevelRoot
-}
-
 func detectChainLevel(
 	index int,
 	total int,
@@ -231,36 +220,6 @@ func detectTLSVersion(state tls.ConnectionState) string {
 	}
 }
 
-func calcStatus(
-	valid bool,
-	daysLeft int64,
-	trusted bool,
-	hostnameOK bool,
-	ocspGood bool,
-	ocspChecked bool,
-	tlsVersion string,
-) string {
-
-	if !valid || !trusted || !hostnameOK {
-		return config.StatusCritical
-	}
-
-	if daysLeft < config.CertExpirySoonThreshold {
-		return config.StatusWarning
-	}
-
-	if tlsVersion != config.TLSVersion13 &&
-		tlsVersion != config.TLSVersion12 {
-		return config.StatusWarning
-	}
-
-	if ocspChecked && !ocspGood {
-		return config.StatusWarning
-	}
-
-	return config.StatusOK
-}
-
 /* ===========================
    MAIN SCANNER
 =========================== */
@@ -340,22 +299,6 @@ func Scan(
 		trustReason = strings.Join(msgs, " ")
 	}
 
-	var (
-		ocspDetail  *models.OCSPDetail
-		ocspGood    bool
-		ocspChecked bool
-	)
-
-	if issuer := findIssuer(certs[0], certs[1:]); issuer != nil {
-		ocspDetail = checkOCSP(certs[0], issuer)
-		if ocspDetail != nil {
-			ocspGood = ocspDetail.Good
-			ocspChecked = ocspDetail.Checked
-		}
-	}
-
-	tlsScan := scanTLS(ctx, domain)
-
 	// [UPDATED] Gọi hàm buildFullCertChain đã refactor
 	chain := buildFullCertChain(certs, trusted)
 
@@ -365,20 +308,6 @@ func Scan(
 	daysLeft := int64(time.Until(mainCert.NotAfter).Hours() / 24)
 	valid := now.After(mainCert.NotBefore) && now.Before(mainCert.NotAfter)
 
-	grade := calcGrade(tlsVersion, daysLeft, trusted, ocspGood)
-
-	status := calcStatus(
-		valid,
-		daysLeft,
-		trusted,
-		hostnameOK,
-		ocspGood,
-		ocspChecked,
-		tlsVersion,
-	)
-
-	hasRoot := detectHasRootFromChain(chain)
-
 	return &models.SSLCheckResponse{
 		Hostname:    domain,
 		IP:          ip,
@@ -386,17 +315,11 @@ func Scan(
 		Valid:       valid,
 		DaysLeft:    daysLeft,
 		TLSVersion:  tlsVersion,
-		TLSScan:     tlsScan,
 		HostnameOK:  hostnameOK,
 		Trusted:     trusted,
 		TrustIssues: trust.Issues,
 		TrustReason: trustReason,
-		OCSP:        ocspDetail,
-		OCSPGood:    ocspGood,
-		Grade:       grade,
-		Status:      status,
 		CertChain:   chain,
-		HasRoot:     hasRoot,
 		CheckTime:   time.Now(),
 		Success:     true,
 	}, nil
@@ -538,7 +461,7 @@ func isFatalTrustIssue(code models.TrustCode) bool {
 		models.TrustUntrustedRoot,
 		models.TrustCertExpired,
 		models.TrustChainExpired,
-		models.TrustNameMismatch,
+		// models.TrustNameMismatch,
 		models.TrustUnknown:
 
 		return true

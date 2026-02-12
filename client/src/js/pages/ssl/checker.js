@@ -4,11 +4,10 @@
 import {
     /* dom.js */
     toggleLoading,
-    show,
-    hide,
     setDisplay,
     showElements,
     resetUI,
+    setElementsEnabled,
     showError,
 
     /* network.js */
@@ -1454,6 +1453,7 @@ function handleURLParams() {
 if (formChecker) {
     formChecker.addEventListener("submit", async (e) => {
         e.preventDefault();
+        setElementsEnabled([inputChecker, btnSubmitChecker], false);
         resetUI([toolResultChecker, toolShareLink, toolError]);
         toggleLoading(btnSubmitChecker, iconCheckerArrow, iconCheckerLoading, true);
         const hostname = normalizeHostnameInput(inputChecker.value.trim());
@@ -1469,6 +1469,7 @@ if (formChecker) {
             showError(toolError, toolErrorMessage, msg, [toolShareLink, toolResultChecker]);
         } finally {
             toggleLoading(btnSubmitChecker, iconCheckerArrow, iconCheckerLoading, false);
+            setElementsEnabled([inputChecker, btnSubmitChecker], true);
         }
     });
 }

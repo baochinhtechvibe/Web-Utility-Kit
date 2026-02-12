@@ -133,6 +133,44 @@ export function toggleLoading(
     loadingIcon?.classList.toggle("d-none", !isLoading);
 }
 
+// ================================
+// ENABLE / DISABLE MULTIPLE ELEMENTS
+// Bật / tắt trạng thái disabled cho nhiều element
+// ================================
+
+/**
+ * Bật hoặc tắt trạng thái disabled của danh sách element
+ *
+ * Dùng cho input, button, select, textarea...
+ * Giúp khóa / mở form khi submit hoặc loading
+ *
+ * Quy ước:
+ *  - status = true  → enable (disabled = false)
+ *  - status = false → disable (disabled = true)
+ *
+ * Hàm sẽ tự bỏ qua:
+ *  - element null / undefined
+ *  - element không có thuộc tính disabled
+ *
+ * @param {HTMLElement[]} elements - Danh sách element cần xử lý
+ * @param {boolean} status - true = enable, false = disable
+ */
+export function setElementsEnabled(elements = [], status = true) {
+
+    if (!Array.isArray(elements)) return;
+
+    elements.forEach(el => {
+
+        if (!el) return;
+
+        // chỉ set nếu element có thuộc tính disabled
+        if ("disabled" in el) {
+            el.disabled = !status;
+        }
+
+    });
+}
+
 
 
 // ================================
