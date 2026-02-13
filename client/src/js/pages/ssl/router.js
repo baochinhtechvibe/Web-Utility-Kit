@@ -2,7 +2,10 @@
     SSL TOOLS ROUTER
    ==========================
 */
-import { setDisplay } from "../../utils/index.js";
+import {
+    setDisplay,
+    resetUI
+} from "../../utils/index.js";
 // ===================================================
 //  TOOL MENU BUTTONS (Sidebar / Toolbar)
 // ===================================================
@@ -20,6 +23,19 @@ const toolCsr = document.getElementById("toolCsr");
 const toolCert = document.getElementById("toolCert");
 const toolMatcher = document.getElementById("toolMatcher");
 const toolConverter = document.getElementById("toolConverter");
+const toolResultChecker = document.getElementById("toolResultChecker");
+const toolResult = document.getElementById("toolResult");
+const toolShareLink = document.getElementById("toolShareLink");
+const toolError = document.getElementById("toolError");
+
+const RESET_SECTIONS = [
+    toolResultChecker,
+    toolResult,
+    toolShareLink,
+    toolError
+];
+
+
 // ===================================================
 //  TOOL MENU + ROUTER HANDLERS
 // ===================================================
@@ -68,6 +84,13 @@ function getToolSlugFromURL() {
  * Active tool theo slug (có animation)
  */
 function activateTool(slug, pushState = true) {
+
+    /* ===== RESET GLOBAL RESULT UI ===== */
+
+    if (slug !== currentSlug) {
+        resetUI(RESET_SECTIONS);
+    }
+
 
     if (!TOOL_ROUTE_MAP[slug]) {
         slug = "ssl-checker";

@@ -5,7 +5,7 @@ Web Utility Kit – A popular toolkit that helps accurately and comprehensively 
 # Web-Utility-Kit
 
 Web Utility Kit – A popular toolkit that helps accurately and comprehensively test websites.
-[tools.bctechvibe.io.vn/](http://tools.bctechvibe.io.vn/)
+tools.bctechvibe.io.vn/
 │
 ├── client/ # Frontend (HTML/CSS/JavaScript)
 │ ├── public/ # Static assets
@@ -148,3 +148,28 @@ Web Utility Kit – A popular toolkit that helps accurately and comprehensively 
 ├── .gitignore
 ├── LICENSE
 └── README.md
+
+dns-lookup-tool/
+├── cmd/
+│ └── main.go
+├── internal/
+│ ├── dns/
+│ │ ├── blacklist.go
+│ │ ├── config.go
+│ │ ├── dnssec_record.go
+│ │ ├── dnssec.go
+│ │ └── query.go
+│ ├── handlers/
+│ │ └── handlers.go
+│ └── models/
+│ └── models.go
+├── logs/
+│ ├── error.log
+│ └── dns.log
+├── bin/
+│ └── dns-lookup
+├── GeoLite2-ASN.mmdb
+├── GeoLite2-City.mmdb
+├── GeoLite2-Country.mmdb
+├── go.mod
+└── go.sum

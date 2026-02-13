@@ -71,6 +71,53 @@ export function resetUI(elements = []) {
     showElements("none", ...elements);
 }
 
+/**
+ * Reset tất cả thành phần nhập liệu trong container
+ * @param {HTMLElement|string} root - element hoặc selector
+ */
+export function resetInputsInContainer(root) {
+    const container =
+        typeof root === "string"
+            ? document.querySelector(root)
+            : root;
+
+    if (!container) return;
+
+    // reset form chuẩn nếu có
+    container.querySelectorAll("form").forEach(form => {
+        form.reset();
+    });
+
+    // reset input rời ngoài form
+    container
+        .querySelectorAll("input, textarea, select")
+        .forEach(el => {
+            const tag = el.tagName.toLowerCase();
+            const type = (el.type || "").toLowerCase();
+
+            if (tag === "select") {
+                el.selectedIndex = 0;
+                return;
+            }
+
+            if (type === "checkbox" || type === "radio") {
+                el.checked = false;
+                return;
+            }
+
+            if (type === "button" || type === "submit" || type === "hidden") {
+                return;
+            }
+
+            el.value = "";
+        });
+
+    // clear custom data-state nếu bạn có dùng
+    container
+        .querySelectorAll("[data-state]")
+        .forEach(el => el.setAttribute("data-state", "idle"));
+}
+
 
 
 
