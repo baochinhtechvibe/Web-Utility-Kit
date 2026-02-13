@@ -3,17 +3,24 @@ package checker
 import (
 	"context"
 	"net/http"
-
-	"tools.bctechvibe.io.vn/server/ssl/internal/tools/checker/detector"
 )
 
+// Probe definitions
 type probeDef struct {
 	client *http.Client
 	url    string
 	method string
 }
 
-func collectProbes(ctx context.Context, domain string) []*detector.Probe {
+// Probe result structure
+type Probe struct {
+	URL      string
+	Method   string
+	Response *http.Response
+	Error    error
+}
+
+func collectProbes(ctx context.Context, domain string) []*Probe {
 	defs := []probeDef{
 		{strictClient, "https://" + domain, http.MethodHead},
 		{strictClient, "https://" + domain, http.MethodGet},
@@ -25,12 +32,12 @@ func collectProbes(ctx context.Context, domain string) []*detector.Probe {
 		{plainClient, "http://" + domain, http.MethodGet},
 	}
 
-	var probes []*detector.Probe
+	var probes []*Probe
 
 	for _, d := range defs {
 		resp, err := doRequest(ctx, d.client, d.url, d.method)
 
-		probes = append(probes, &detector.Probe{
+		probes = append(probes, &Probe{
 			URL:      d.url,
 			Method:   d.method,
 			Response: resp,

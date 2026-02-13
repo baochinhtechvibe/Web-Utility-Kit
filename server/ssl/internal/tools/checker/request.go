@@ -23,11 +23,6 @@ func doRequest(
 
 	req.Header.Set("Accept", "*/*")
 	req.Header.Set("Accept-Language", "en-US,en;q=0.9")
-	req.Header.Set("Connection", "close")
-
-	if method == http.MethodGet {
-		req.Header.Set("Range", "bytes=0-0")
-	}
 
 	return client.Do(req)
 }
