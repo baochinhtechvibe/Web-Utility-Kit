@@ -2,10 +2,6 @@
     position: relative;
 }
 
-#header .header__main {
-    /* margin: 0 auto; */
-}
-
 #header .header__main .header__icon {
     color: var(--icon-tools);
     font-size: var(--icon-md);

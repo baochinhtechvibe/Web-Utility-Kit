@@ -436,60 +436,36 @@
     CSR (Certificate Signing Request) Tool
  ========================================== */
 
-.code-block .code-block__title {
-    color: var(--text-primary);
+
+.code-block__body {
+    display: inline-block;
+    width: fit-content;
+    max-width: 100%;
+
+    font-size: var(--text-sm);
+    background-color: var(--ssl-code-bg);
 }
 
-.code-block .code-block__body {
-    background-color: var(--ssl-code-bg);
-    border: var(--border);
-    max-width: 780px;
+.code-block__header {
+  padding: var(--space-4) 0;
+}
+
+.code-block__content {
+    display: inline-flex;
+    padding: 0 var(--space-2) var(--space-4);
+}
+
+.code-block__code {
     margin: 0 auto;
 }
 
-.code-block .code-block__header {
-    padding: var(--padding-md);
-    
+.ssl-tools__description {
+    text-align: justify;
 }
 
-.code-block .code-block__header .code-block__type {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-}
-
-.code-block .code-block__header .code-block__type .code-icon {
-    font-family: monospace;
-    font-weight: var(--font-semibold);
-    opacity: 0.9;
-}
-
-.code-block .code-block__header .code-block__btn-copy {
-    padding: var(--space-2);
-    border-radius: var(--radius-full);
-    transition: all var(--transition-base);
-}
-
-.code-block .code-block__header .code-block__btn-copy:hover {
-    background-color: var(--gray-200);
-}
-
-.code-block .code-block__content {
-    padding: var(--space-4);
-    scroll-behavior: auto;
-    overscroll-behavior-x: contain;
-    align-items: stretch;
-    overflow-x: auto;
-}
-
-.code-block .code-block__code {
-    min-width: max-content;
-    white-space: nowrap;
-    display: block;
-}
-
-.formRequest {
-    box-shadow: var(--shadow-sm);
+.ssl-tools__body {
+    border: var(--border);
+    border-color: var(--ssl-tool-primary);
 }
 
 .formRequest__header {
@@ -506,9 +482,6 @@
     padding: var(--space-4);
     flex-direction: column;
     gap: var(--space-4);
-    border: var(--border);
-    border-top: none;
-    border-color: var(--ssl-tool-primary);
 }
 
 .formRequest__input--content {
@@ -543,6 +516,10 @@
 
 
 @media (min-width: 480px) {
+    .code-block__body {
+        /* max-width: 420px; */
+        font-size: var(--text-base);
+    }
 
     .result-checker .cert-card__wrapper {
         flex-direction: row;
@@ -556,13 +533,14 @@
     .result-checker .cert-card__content {
         flex-grow: 1;
     }
-
-    .formRequest__input--content {
-        aspect-ratio: 4 / 3;
-    }
 }
 
 @media (min-width: 680px) {
+
+    #toolCsr {
+        max-width: 70%;
+        margin: 0 auto;
+    }
 
     .result-checker .ssl-tools__result-title {
         font-size: var(--text-lg);
@@ -588,21 +566,6 @@
 
     }
 
-    .formRequest__header {
-        padding: var(--padding-lg)
-    }
-
-    .formRequest__title {
-        font-size: var(--text-md);
-    }
-
-    .formRequest__actions--submit {
-        font-size: var(--text-md)
-    }
-
-    .formRequest__input--content {
-        aspect-ratio: 3 / 2;
-    }
     
 }
 
@@ -611,17 +574,13 @@
         height: 128px;
         width: 128px;
     }
-
-    .formRequest__body {
-        padding: var(--space-6);
-    }
-
-    .formRequest__input--content {
-        font-size: var(--text-md);
-    }
 }
 
 @media (min-width: 1024px) {
+    .code-block__body {
+        /* max-width: 440px; */
+        font-size: var(--text-md);
+    }
 
     .ssl-tools .form-control__body {
         flex-wrap: nowrap;
@@ -642,23 +601,6 @@
         flex: 0 0 auto;
         width: 15%;
         align-self: flex-end;
-        font-size: var(--text-md);
-    }
-
-    .formRequest__title {
-        font-size: var(--text-xl);
-    }
-
-    .formRequest__body {
-        padding: var(--space-8);
-    }
-
-    .formRequest__actions--submit {
-        font-size: var(--text-lg)
-    }
-
-    .formRequest__input--content {
-        aspect-ratio: 2 / 1 ;
         font-size: var(--text-md);
     }
 }

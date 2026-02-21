@@ -101,3 +101,96 @@
 /* Transition */
 .transition { transition: all 0.2s ease; }
 .transition-fast { transition: all 0.15s ease; }
+
+/* ===================================
+   POSITION HELPERS
+   ================================= */
+
+/* Position type */
+.static { position: static; }
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+
+/* Inset all */
+.inset-0 { inset: 0; }
+
+/* Top */
+.top-0 { top: 0; }
+.top-1 { top: var(--space-1); }
+.top-2 { top: var(--space-2); }
+.top-4 { top: var(--space-4); }
+.top-6 { top: var(--space-6); }
+.top-8 { top: var(--space-8); }
+.top-auto { top: auto; }
+
+/* Bottom */
+.bottom-0 { bottom: 0; }
+.bottom-1 { bottom: var(--space-1); }
+.bottom-2 { bottom: var(--space-2); }
+.bottom-4 { bottom: var(--space-4); }
+.bottom-6 { bottom: var(--space-6); }
+.bottom-8 { bottom: var(--space-8); }
+.bottom-auto { bottom: auto; }
+
+/* Left */
+.left-0 { left: 0; }
+.left-1 { left: var(--space-1); }
+.left-2 { left: var(--space-2); }
+.left-4 { left: var(--space-4); }
+.left-6 { left: var(--space-6); }
+.left-8 { left: var(--space-8); }
+.left-auto { left: auto; }
+
+/* Right */
+.right-0 { right: 0; }
+.right-1 { right: var(--space-1); }
+.right-2 { right: var(--space-2); }
+.right-4 { right: var(--space-4); }
+.right-6 { right: var(--space-6); }
+.right-8 { right: var(--space-8); }
+.right-auto { right: auto; }
+
+/* ===================================
+   OVERFLOW HELPERS
+   ================================= */
+
+/* Overflow tổng */
+.overflow-visible { overflow: visible; }
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+.overflow-scroll { overflow: scroll; }
+.overflow-clip { overflow: clip; }
+
+/* Overflow theo trục X */
+.overflow-x-visible { overflow-x: visible; }
+.overflow-x-hidden { overflow-x: hidden; }
+.overflow-x-auto { overflow-x: auto; }
+.overflow-x-scroll { overflow-x: scroll; }
+.overflow-x-clip { overflow-x: clip; }
+
+/* Overflow theo trục Y */
+.overflow-y-visible { overflow-y: visible; }
+.overflow-y-hidden { overflow-y: hidden; }
+.overflow-y-auto { overflow-y: auto; }
+.overflow-y-scroll { overflow-y: scroll; }
+.overflow-y-clip { overflow-y: clip; }
+
+/* Scroll behavior */
+.scroll-auto { scroll-behavior: auto; }
+.scroll-smooth { scroll-behavior: smooth; }
+
+/* Overscroll control */
+.overscroll-auto { overscroll-behavior: auto; }
+.overscroll-contain { overscroll-behavior: contain; }
+.overscroll-none { overscroll-behavior: none; }
+
+/* Overscroll theo trục */
+.overscroll-x-auto { overscroll-behavior-x: auto; }
+.overscroll-x-contain { overscroll-behavior-x: contain; }
+.overscroll-x-none { overscroll-behavior-x: none; }
+
+.overscroll-y-auto { overscroll-behavior-y: auto; }
+.overscroll-y-contain { overscroll-behavior-y: contain; }
+.overscroll-y-none { overscroll-behavior-y: none; }

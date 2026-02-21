@@ -1,0 +1,8 @@
+.code-program { color: var(--color-program); }
+.code-keyword { color: var(--color-key-word); }
+.code-value   { color: var(--color-value); }
+.code-string  { color: var(--code-string); }
+.code-parameter { color: var(--code-parameter); }
+.code-func    { color: var(--code-func); }
+.code-comment { color: var(--code-comment); font-style: italic; }
+.code-text    { color: var(--code-text); }

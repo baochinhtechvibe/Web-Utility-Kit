@@ -157,3 +157,9 @@ func ParseDomain(input string) (string, error) {
 	}
 	return ascii, nil
 }
+
+// ValidateCSRPEM matches "BEGIN CERTIFICATE REQUEST"
+func ValidateCSRPEM(pem string) bool {
+	return strings.Contains(pem, "BEGIN CERTIFICATE REQUEST") ||
+		strings.Contains(pem, "BEGIN NEW CERTIFICATE REQUEST")
+}

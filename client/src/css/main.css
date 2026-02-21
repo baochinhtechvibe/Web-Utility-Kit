@@ -12,6 +12,8 @@
 /* ===== Utilities ===== */
 @import "./utilities/spacing.css";
 @import "./utilities/helper.css";
+@import "./utilities/colors.css";
+
 
 /* ===== Components ===== */
 @import "./components/card.css";

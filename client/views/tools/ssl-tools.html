@@ -84,7 +84,8 @@
 
                     <!-- ================= SSL CHECKER ================= -->
                     <section id="toolChecker" data-slug="ssl-checker"
-                        class="ssl-tools__section ssl-tools__section--checker ssl-tools__section--active mt-10 d-block">
+                        class="ssl-tools__section ssl-tools__section--checker mt-10 d-none">
+
                         <p class="ssl-tools__description mt-3 text-justify">
                             Sử dụng Trình kiểm tra SSL nhanh của chúng tôi để giúp bạn dễ dàng phát hiện các sự cố trong
                             quá
@@ -124,11 +125,13 @@
                     </section>
 
                     <!-- ================= SSL CSR DECODER ================= -->
-                    <section id="toolCsr" class="ssl-tools__section ssl-tools__section--csr mt-10 d-none"
+                    <section id="toolCsr"
+                        class="ssl-tools__section ssl-tools__section--active ssl-tools__section--csr mt-10 d-block"
                         data-slug="csr-decoder">
-                        <div class="ssl-tools__heading">
+                        <div class="ssl-tools__heading mb-4">
                             <p class="ssl-tools__description">
-                                Sử dụng công cụ CSR Decoder để giải mã Certificate Signing Request (CSR) và kiểm tra xem
+                                Sử dụng công cụ <strong>CSR Decoder</strong> để giải mã <strong>Certificate Signing
+                                    Request (CSR)</strong> và kiểm tra xem
                                 yêu
                                 cầu chứng chỉ có chứa đúng thông tin hay không.CSR là một khối văn bản được mã hóa, bao
                                 gồm
@@ -145,34 +148,58 @@
                                 <em>“-----BEGIN CERTIFICATE REQUEST-----”</em>
                                 và kết thúc bằng
                                 <em>“-----END CERTIFICATE REQUEST-----”</em>.
-                            </p>
-                            <div class="ssl-tools__code-block">
-                                <p class="ssl-tools__code-title">
-                                    Kiểm tra CSR trực tiếp trên máy tính bằng OpenSSL:
-                                </p>
-                                <code class="ssl-tools__code">
-                                    openssl req -in your_domain.csr -noout -text
-                                </code>
-                                <button class="ssl-tools__copy-btn js-copy-code"
-                                    data-clipboard-target=".ssl-tools__code">
-                                    <i class="fa-solid fa-copy"></i>
-                                </button>
+                            </p><br>
+                            <div class="code-block">
+                                <div class="code-block__title">
+                                    <i> Kiểm tra CSR trực tiếp trên máy tính bằng OpenSSL:</i>
+                                </div>
+                                <div class="code-block__body mt-3 rounded-md">
+                                    <div class="code-block__header d-flex items-center justify-between rounded-top">
+                                        <div class="code-block__type">
+                                            <span class="code-icon">&lt;/&gt;</span>
+                                            <span>Mã</span>
+                                        </div>
+                                        <button class="code-block__btn-copy js-copy-code d-block"
+                                            data-clipboard-target=".code-block__code">
+                                            <i class="fa-regular fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <div class="code-block__content d-flex justify-start items-start rounded-bottom">
+                                        <code class="code-block__code">
+                                            <span class="code-program">openssl</span>
+                                            <span class="code-text">req</span>
+                                            <span class="code-parameter">-in</span>
+                                            <span class="code-text">your_domain.csr</span>
+                                            <span class="code-parameter">-noout</span>
+                                            <span class="code-parameter">-text</span>
+                                        </code>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="ssl-tools__body">
-                            <div class="ssl-tools__panel ssl-tools__panel--primary">
-                                <div class="ssl-tools__panel-header">
-                                    Dán Certificate Signing Request (CSR)
-                                    <span id="csrLoading" class="ssl-tools__loading">
-                                        &nbsp;&nbsp;&nbsp;&nbsp;<!-- spinner -->
-                                    </span>
+                        <div class="ssl-tools__body rounded-md">
+                            <form method="POST" id="formCsrDecoder" class="formRequest rounded-md">
+                                <div class="formRequest__header d-flex items-center justify-center rounded-top">
+                                    <h3 class="formRequest__title">
+                                        Dán Certificate Signing Request (CSR)
+                                    </h3>
                                 </div>
 
-                                <div class="ssl-tools__panel-body">
-                                    <textarea id="inputCsr" class="ssl-tools__textarea"
-                                        placeholder="-----BEGIN CERTIFICATE REQUEST-----"></textarea>
+                                <div class="formRequest__body d-flex rounded-bottom">
+                                    <div class="formRequest__input">
+                                        <textarea id="inputCsr" class="formRequest__input--content"
+                                            placeholder="-----BEGIN CERTIFICATE REQUEST-----"></textarea>
+                                    </div>
+                                    <div class="formRequest__actions">
+                                        <button type="submit" id="btnCsrDecoder"
+                                            class="formRequest__actions--submit d-flex flex-row justify-center items-center gap-2">
+                                            <i class="fa-solid fa-table-cells-row-unlock" id="iconCsrDecoder"></i>
+                                            Giải mã
+                                            <i class="fa-solid fa-spinner fa-spin d-none" id="iconCsrLoading"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </section>
 
@@ -191,17 +218,24 @@
                                 <em>“-----BEGIN CERTIFICATE-----”</em>
                                 và kết thúc bằng
                                 <em>“-----END CERTIFICATE-----”</em>.
-                            </p>
-                            <div class="ssl-tools__code-block">
-                                <p class="ssl-tools__code-title">
+                            </p><br>
+                            <div class="code-block">
+                                <p class="code-block__title">
                                     Giải mã chứng chỉ trực tiếp trên máy tính bằng OpenSSL:
                                 </p>
-                                <code class="ssl-tools__code">
-                                    openssl x509 -in certificate.crt -text -noout
-                                </code>
-                                <button class="ssl-tools__copy-btn js-copy-code">
-                                    <i class="fa-solid fa-copy"></i>
-                                </button>
+                                <div class="code-block__body rounded-md">
+                                    <div class="code-block__header relative rounded-top">
+                                        <button class="code-block__btn-copy js-copy-code absolute top-2 right-2 d-block"
+                                            data-clipboard-target=".code-block__code">
+                                            Copy mã
+                                            <i class="fa-solid fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <div class="code-block__content rounded-bottom">
+                                        <code
+                                            class="code-block__code">openssl x509 -in certificate.crt -text -noout</code>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="ssl-tools__body">
@@ -235,34 +269,23 @@
                                 Công cụ hoạt động bằng cách so sánh giá trị hash của khóa công khai (public key) được
                                 trích
                                 xuất từ private key, chứng chỉ hoặc CSR, sau đó cho biết chúng có trùng khớp hay không.
-                            </p>
-                            <div class="ssl-tools__code-block">
-                                <p class="ssl-tools__code-title">
+                            </p><br>
+                            <div class="code-block">
+                                <p class="code-block__title">
                                     Kiểm tra khóa riêng và chứng chỉ trực tiếp trên máy tính bằng OpenSSL:
                                 </p>
-                                <div class="ssl-tools__code-group">
-                                    <code class="ssl-tools__code">
-                                        openssl pkey -in privateKey.key -pubout -outform pem | sha256sum
-                                    </code>
-                                    <button class="ssl-tools__copy-btn js-copy-code">
-                                        <i class="fa-solid fa-copy"></i>
-                                    </button>
-                                </div>
-                                <div class="ssl-tools__code-group">
-                                    <code class="ssl-tools__code">
-                                        openssl x509 -in certificate.crt -pubkey -noout -outform pem | sha256sum
-                                    </code>
-                                    <button class="ssl-tools__copy-btn js-copy-code">
-                                        <i class="fa-solid fa-copy"></i>
-                                    </button>
-                                </div>
-                                <div class="ssl-tools__code-group">
-                                    <code class="ssl-tools__code">
-                                        openssl req -in CSR.csr -pubkey -noout -outform pem | sha256sum
-                                    </code>
-                                    <button class="ssl-tools__copy-btn js-copy-code">
-                                        <i class="fa-solid fa-copy"></i>
-                                    </button>
+                                <div class="code-block__body rounded-md">
+                                    <div class="code-block__header relative rounded-top">
+                                        <button class="code-block__btn-copy js-copy-code absolute top-2 right-2 d-block"
+                                            data-clipboard-target=".code-block__code">
+                                            Copy mã
+                                            <i class="fa-solid fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <div class="code-block__content rounded-bottom">
+                                        <code
+                                            class="code-block__code">openssl pkey -in privateKey.key -pubout -outform pem | sha256sum</code>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -274,12 +297,12 @@
                     </section>
 
                     <!-- ====================== RESULT SECTION CHECKER====================== -->
-                    <section id="toolResultChecker"
-                        class="result-checker ssl-tools__detail mt-10 d-none" data-slug="ssl-result"
-                        role="region" aria-live="polite" aria-busy="false" aria-labelledby="sslResultTitle"
-                        tabindex="-1" data-state="idle">
+                    <section id="toolResultChecker" class="result-checker ssl-tools__detail mt-10 d-none"
+                        data-slug="ssl-result" role="region" aria-live="polite" aria-busy="false"
+                        aria-labelledby="sslResultTitle" tabindex="-1" data-state="idle">
                         <div class="ssl-tools__result-card">
-                            <div id="resultCheckerHeader" class="ssl-tools__result-header d-flex flex-row items-center justify-between gap-4">
+                            <div id="resultCheckerHeader"
+                                class="ssl-tools__result-header d-flex flex-row items-center justify-between gap-4">
                                 <h3 id="resultsTitleChecker" class="ssl-tools__result-title d-block">
                                     <i class="fas fa-check-circle"></i>
                                     Kết quả cho domain: <span id="resultDomainName"

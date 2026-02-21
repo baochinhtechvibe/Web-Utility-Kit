@@ -9,6 +9,7 @@
    /* Gray Scale */
    --gray-50: #F8FAFC;
    --gray-100: #FBFBF9;
+   --gray-150: #f9f9f9;
    --gray-200: #E5E7EB;
    --gray-300: #CBD5E1;
    --gray-400: #6B7280;
@@ -32,6 +33,7 @@
    --yellow-dark: #DFAA11;
    --yellow-light: #FFD53D;
    --yellow-accent: #FFFFCC;
+   --yellow-600: #ba8e00;
 
 
    --green-primary: #5CB85C;
@@ -39,8 +41,13 @@
    --green-400: #6FCF97;
 
    --orange-400: #F2994A;
+   --orange-600: #b9480d;
 
    --purple-500: #6A1B9A;
+
+   --red-700: #D32F2F;
+   --red-500: #E53935;
+   --red-400: #EF5350;
 
    /* Semantic Colors */
    --error: #cc3300;
@@ -256,6 +263,15 @@
    /* ===================================
    VARIABLES FOR EACH TOOL
    ================================= */
+   --color-program: var(--orange-600);
+   --color-key-word: var(--blue-500);
+   --color-value: var(--orange-400);
+   --code-string: var(--green-400);
+   --code-parameter: var(--yellow-600);
+   --code-func: var(--purple-500);
+   --code-comment: var(--gray-400);
+   --code-text: var(--gray-650);
+
    /* DNS Lookup Tool */
    --dns-tool-primary: var(--blue-500);
    --dns-tool-text-primary: var(--white);
@@ -313,7 +329,6 @@
    /* SSL Tool */
    --ssl-tool-primary: var(--blue-600);
    --ssl-tool-secondary: var(--blue-500);
-   /* --ssl-tool-text-primary: var(--white); */
    --ssl-checker-valid: var(--green-700);
    --ssl-checker-warning: var(--yellow-dark);
    --ssl-checker-critical: var(--error);
@@ -329,6 +344,9 @@
    --ssl-checker-intermediate-level: var(--orange-400);
    --ssl-checker-root-level: var(--green-primary);
    --ssl-checker-btn-hover: var(--gray-600);
+
+   --ssl-code-bg: var(--gray-150);
+   --btn-submit-hover: var(--gray-600);
 
 }
 

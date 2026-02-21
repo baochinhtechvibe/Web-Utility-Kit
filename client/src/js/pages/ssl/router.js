@@ -84,6 +84,7 @@ function getToolSlugFromURL() {
  * Active tool theo slug (có animation)
  */
 function activateTool(slug, pushState = true) {
+    const currentSlug = getToolSlugFromURL();
 
     /* ===== RESET GLOBAL RESULT UI ===== */
 

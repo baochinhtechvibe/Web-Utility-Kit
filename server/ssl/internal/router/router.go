@@ -8,6 +8,7 @@ import (
 	"tools.bctechvibe.io.vn/server/ssl/internal/config"
 	"tools.bctechvibe.io.vn/server/ssl/internal/platform/middleware"
 	"tools.bctechvibe.io.vn/server/ssl/internal/tools/checker"
+	"tools.bctechvibe.io.vn/server/ssl/internal/tools/csr"
 )
 
 /* ===============================
@@ -64,6 +65,12 @@ func Register() *Router {
 	}
 
 	http.Handle("/api/ssl/check", handler)
+
+	csrHandler := &RateLimitHandler{
+		limiter:     limiter,
+		nextHandler: csr.NewHandler(),
+	}
+	http.Handle("/api/ssl/csr/decode", csrHandler)
 
 	return &Router{
 		limiter: limiter,

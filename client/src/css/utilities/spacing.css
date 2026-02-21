@@ -128,3 +128,112 @@
 .gap-x-8 { column-gap: var(--space-8); }
 .gap-x-10 { column-gap: var(--space-10); }
 .gap-x-12 { column-gap: var(--space-12); }
+
+/* ===================================
+   GRID SYSTEM (Bootstrap-like)
+   ================================= */
+
+/* Row */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: calc(var(--space-4) * -1);
+  margin-right: calc(var(--space-4) * -1);
+}
+
+/* Row without gutter */
+.row-no-gutter {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.row-no-gutter > * {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Columns base */
+.row > * {
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+  box-sizing: border-box;
+}
+
+/* Auto column */
+.col {
+  flex: 1 0 0;
+}
+
+/* Fixed columns 1 → 12 */
+.col-1  { flex: 0 0 8.3333%;  max-width: 8.3333%; }
+.col-2  { flex: 0 0 16.6667%; max-width: 16.6667%; }
+.col-3  { flex: 0 0 25%;      max-width: 25%; }
+.col-4  { flex: 0 0 33.3333%; max-width: 33.3333%; }
+.col-5  { flex: 0 0 41.6667%; max-width: 41.6667%; }
+.col-6  { flex: 0 0 50%;      max-width: 50%; }
+.col-7  { flex: 0 0 58.3333%; max-width: 58.3333%; }
+.col-8  { flex: 0 0 66.6667%; max-width: 66.6667%; }
+.col-9  { flex: 0 0 75%;      max-width: 75%; }
+.col-10 { flex: 0 0 83.3333%; max-width: 83.3333%; }
+.col-11 { flex: 0 0 91.6667%; max-width: 91.6667%; }
+.col-12 { flex: 0 0 100%;     max-width: 100%; }
+
+/* ===================================
+   RESPONSIVE COLUMNS
+   Breakpoints lấy từ variables.css
+   ================================= */
+
+/* ≥ sm */
+@media (min-width: 640px) {
+  .col-sm { flex: 1 0 0; }
+
+  .col-sm-1  { flex: 0 0 8.3333%;  max-width: 8.3333%; }
+  .col-sm-2  { flex: 0 0 16.6667%; max-width: 16.6667%; }
+  .col-sm-3  { flex: 0 0 25%;      max-width: 25%; }
+  .col-sm-4  { flex: 0 0 33.3333%; max-width: 33.3333%; }
+  .col-sm-5  { flex: 0 0 41.6667%; max-width: 41.6667%; }
+  .col-sm-6  { flex: 0 0 50%;      max-width: 50%; }
+  .col-sm-7  { flex: 0 0 58.3333%; max-width: 58.3333%; }
+  .col-sm-8  { flex: 0 0 66.6667%; max-width: 66.6667%; }
+  .col-sm-9  { flex: 0 0 75%;      max-width: 75%; }
+  .col-sm-10 { flex: 0 0 83.3333%; max-width: 83.3333%; }
+  .col-sm-11 { flex: 0 0 91.6667%; max-width: 91.6667%; }
+  .col-sm-12 { flex: 0 0 100%;     max-width: 100%; }
+}
+
+/* ≥ md */
+@media (min-width: 768px) {
+  .col-md { flex: 1 0 0; }
+
+  .col-md-1  { flex: 0 0 8.3333%;  max-width: 8.3333%; }
+  .col-md-2  { flex: 0 0 16.6667%; max-width: 16.6667%; }
+  .col-md-3  { flex: 0 0 25%;      max-width: 25%; }
+  .col-md-4  { flex: 0 0 33.3333%; max-width: 33.3333%; }
+  .col-md-5  { flex: 0 0 41.6667%; max-width: 41.6667%; }
+  .col-md-6  { flex: 0 0 50%;      max-width: 50%; }
+  .col-md-7  { flex: 0 0 58.3333%; max-width: 58.3333%; }
+  .col-md-8  { flex: 0 0 66.6667%; max-width: 66.6667%; }
+  .col-md-9  { flex: 0 0 75%;      max-width: 75%; }
+  .col-md-10 { flex: 0 0 83.3333%; max-width: 83.3333%; }
+  .col-md-11 { flex: 0 0 91.6667%; max-width: 91.6667%; }
+  .col-md-12 { flex: 0 0 100%;     max-width: 100%; }
+}
+
+/* ≥ lg */
+@media (min-width: 1024px) {
+  .col-lg { flex: 1 0 0; }
+
+  .col-lg-1  { flex: 0 0 8.3333%;  max-width: 8.3333%; }
+  .col-lg-2  { flex: 0 0 16.6667%; max-width: 16.6667%; }
+  .col-lg-3  { flex: 0 0 25%;      max-width: 25%; }
+  .col-lg-4  { flex: 0 0 33.3333%; max-width: 33.3333%; }
+  .col-lg-5  { flex: 0 0 41.6667%; max-width: 41.6667%; }
+  .col-lg-6  { flex: 0 0 50%;      max-width: 50%; }
+  .col-lg-7  { flex: 0 0 58.3333%; max-width: 58.3333%; }
+  .col-lg-8  { flex: 0 0 66.6667%; max-width: 66.6667%; }
+  .col-lg-9  { flex: 0 0 75%;      max-width: 75%; }
+  .col-lg-10 { flex: 0 0 83.3333%; max-width: 83.3333%; }
+  .col-lg-11 { flex: 0 0 91.6667%; max-width: 91.6667%; }
+  .col-lg-12 { flex: 0 0 100%;     max-width: 100%; }
+}
+
