@@ -157,7 +157,7 @@ stats/
 
 # Images (if using CDN/external hosting)
 # assets/images/
-
+*.exe
 # Vendor libraries (if using CDN)
 # vendor/
 
