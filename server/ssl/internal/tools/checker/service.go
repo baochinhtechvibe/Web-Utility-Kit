@@ -48,14 +48,6 @@ func NewWithDeps(c *cache.MemoryCache, b *breaker.CircuitBreaker) *Service {
 
 // Check now accepts caller's context so timeouts/cancellation propagate
 func (s *Service) Check(ctx context.Context, domain string) (*models.SSLCheckResponse, error) {
-	// check cache first
-	if r, ok := s.cache.Get(domain); ok {
-		if resp, ok := r.(*models.SSLCheckResponse); ok {
-			return resp, nil
-		}
-		// unexpected cached type, ignore and continue
-	}
-
 	// breaker
 	if !s.breaker.Allow(domain) {
 		return nil, shared.ErrBlocked
@@ -70,7 +62,6 @@ func (s *Service) Check(ctx context.Context, domain string) (*models.SSLCheckRes
 			return nil, err
 		}
 		s.breaker.Success(domain)
-		s.cache.Set(domain, res)
 		return res, nil
 	})
 	if err != nil {

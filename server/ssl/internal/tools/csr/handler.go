@@ -2,7 +2,6 @@ package csr
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -18,16 +17,16 @@ type DecodeRequest struct {
 	CSR string `json:"csr"`
 }
 
-func NewHandler() *Handler {
+func NewHandler(svc *Service) *Handler {
 	return &Handler{
-		svc: New(),
+		svc: svc,
 	}
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// 1. Validate Method
 	if r.Method != http.MethodPost {
-		http.Error(w, "Phương thức HTTP không được hỗ trợ", http.StatusMethodNotAllowed)
+		shared.ErrorDecode(w, "Phương thức HTTP không được hỗ trợ", http.StatusMethodNotAllowed)
 		return
 	}
 
@@ -36,21 +35,30 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	// 3. Content-Type Check
-	if ct := r.Header.Get("Content-Type"); ct != "" && !strings.Contains(ct, "application/json") {
-		shared.Error(w, "Content-Type không được hỗ trợ", http.StatusUnsupportedMediaType, "")
-		return
+	ct := r.Header.Get("Content-Type")
+	if ct != "" {
+		if !strings.HasPrefix(ct, "application/json") {
+			shared.ErrorDecode(w, "Content-Type không được hỗ trợ", http.StatusUnsupportedMediaType)
+			return
+		}
 	}
 
 	// 4. Decode Request
 	var req DecodeRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		log.Printf("Cannot parse CSR request body: %v", err)
-		shared.Error(w, "Dữ liệu request không hợp lệ", http.StatusBadRequest, "")
+		shared.ErrorDecode(w, "Dữ liệu request không hợp lệ", http.StatusBadRequest)
 		return
 	}
 
 	if strings.TrimSpace(req.CSR) == "" {
-		shared.Error(w, "Nội dung CSR không được để trống", http.StatusBadRequest, "")
+		shared.ErrorDecode(w, "Nội dung CSR không được để trống", http.StatusBadRequest)
+		return
+	}
+
+	// Cho phép cả BEGIN CERTIFICATE REQUEST và BEGIN NEW CERTIFICATE REQUEST
+	if !strings.Contains(req.CSR, "BEGIN CERTIFICATE REQUEST") {
+		shared.ErrorDecode(w, `Định dạng csr không hợp lệ, csr cần bắt đầu bằng -----BEGIN CERTIFICATE REQUEST----- hoặc -----BEGIN NEW CERTIFICATE REQUEST----- và kết thúc bằng thẻ tương ứng, bạn có thể tìm hiểu thêm csr <a href="https://www.sectigo.com/blog/what-is-a-certificate-signing-request-csr" target="_blank" rel="noopener noreferrer">tại đây</a>`, http.StatusBadRequest)
 		return
 	}
 
@@ -60,8 +68,8 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	resp, err := h.svc.Decode(r.Context(), req.CSR)
 	if err != nil {
 		log.Printf("CSR decode failed: %v", err)
-		// Return specific error message to user if safe, or generic
-		shared.Error(w, fmt.Sprintf("Không thể giải mã CSR: %v", err), http.StatusBadRequest, "")
+		// Trả về thông báo lỗi thân thiện thay vì leak internal error
+		shared.ErrorDecode(w, "CSR không hợp lệ hoặc bị lỗi định dạng", http.StatusBadRequest)
 		return
 	}
 

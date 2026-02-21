@@ -24,5 +24,14 @@ func doRequest(
 	req.Header.Set("Accept", "*/*")
 	req.Header.Set("Accept-Language", "en-US,en;q=0.9")
 
-	return client.Do(req)
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	// We only need the headers for Server Type detection
+	// Must close body to prevent connection leak and socket hang up
+	resp.Body.Close()
+
+	return resp, nil
 }

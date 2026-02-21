@@ -16,14 +16,17 @@ type CSRDecodeResponse struct {
 	Locality           []string `json:"locality,omitempty"`
 
 	/* ---- Extensions ---- */
-	Sans []string `json:"sans,omitempty"` // DNS Names, IP Addresses, Email Addresses
+	Sans            []string `json:"sans"`
+	HasSANExtension bool     `json:"has_san_extension"	`
+	DnsNames        []string `json:"dns_names,omitempty"`
+	IPAddresses     []string `json:"ip_addresses,omitempty"`
+	EmailAddresses  []string `json:"email_addresses,omitempty"`
+	URIs            []string `json:"uris,omitempty"`
 
 	/* ---- Key Info ---- */
 	KeySize   int    `json:"key_size"`
 	Algorithm string `json:"algorithm"`
 
 	/* ---- Meta ---- */
-	CSR     string `json:"csr,omitempty"` // Optional: echo back original CSR
-	Success bool   `json:"success"`
-	Error   string `json:"error,omitempty"`
+	Success bool `json:"success"`
 }

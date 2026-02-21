@@ -2,33 +2,8 @@ package checker
 
 import (
 	"context"
-	"crypto/tls"
-	"net/http"
 	"strings"
-
-	"tools.bctechvibe.io.vn/server/ssl/internal/config"
 )
-
-/* ===========================
-   HTTP Clients
-=========================== */
-
-var strictClient = &http.Client{
-	Timeout: config.HTTPHeadTimeout,
-}
-
-var insecureClient = &http.Client{
-	Timeout: config.HTTPHeadTimeout,
-	Transport: &http.Transport{
-		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: true,
-		},
-	},
-}
-
-var plainClient = &http.Client{
-	Timeout: config.HTTPHeadTimeout,
-}
 
 /* ===========================
    HELPER FUNCTIONS
@@ -78,8 +53,8 @@ func normalizeServer(v string) string {
    Public API
 =========================== */
 
-func detectServerType(ctx context.Context, domain string) string {
-	probes := collectProbes(ctx, domain)
+func detectServerType(ctx context.Context, domain string, ip string) string {
+	probes := collectProbes(ctx, domain, ip)
 
 	scores := map[string]int{}
 	var fallback string

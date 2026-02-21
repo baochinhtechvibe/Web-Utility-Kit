@@ -243,8 +243,8 @@ export function showError(
 
     if (!section || !messageEl) return;
 
-    // Set nội dung lỗi
-    messageEl.textContent = message;
+    // Set nội dung lỗi (cho phép HTML để hiển thị link nếu có)
+    messageEl.innerHTML = message;
 
     // Hiện section lỗi
     setDisplay(section, "block");
@@ -288,3 +288,22 @@ export const $ = (s, scope = document) =>
  */
 export const $$ = (s, scope = document) =>
     scope.querySelectorAll(s);
+
+
+/**
+ * Render nội dung header kết quả vào một element.
+ *
+ * @param {HTMLElement} el - Phần tử DOM sẽ hiển thị kết quả.
+ * @param {string} msg - Nội dung thông báo cần hiển thị.
+ *
+ * Nếu `el` không tồn tại thì hàm sẽ dừng ngay để tránh lỗi.
+ * Khi hợp lệ, hàm sẽ chèn icon thành công và message vào bên trong element.
+ */
+export function renderSuccessHeader(el, msg) {
+    if (!el) return;
+
+    el.innerHTML = `
+        <i class="fa-solid fa-circle-check"></i>
+        ${msg}
+    `
+}

@@ -68,7 +68,7 @@ func Register() *Router {
 
 	csrHandler := &RateLimitHandler{
 		limiter:     limiter,
-		nextHandler: csr.NewHandler(),
+		nextHandler: csr.NewHandler(csr.New()),
 	}
 	http.Handle("/api/ssl/csr/decode", csrHandler)
 

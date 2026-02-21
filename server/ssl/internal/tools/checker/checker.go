@@ -251,9 +251,10 @@ func Scan(
 		conn *tls.Conn
 	)
 
-	conn, err = dialTLS(ctx, dialer, addrDomain, baseConf)
+	// Dial IP directly to bypass DNS hang, fallback to Domain just in case
+	conn, err = dialTLS(ctx, dialer, addrIP, baseConf)
 	if err != nil {
-		conn, err = dialTLS(ctx, dialer, addrIP, baseConf)
+		conn, err = dialTLS(ctx, dialer, addrDomain, baseConf)
 	}
 
 	if err != nil {
@@ -263,9 +264,9 @@ func Scan(
 		insecure := baseConf.Clone()
 		insecure.InsecureSkipVerify = true
 
-		conn, err = dialTLS(ctx, dialer, addrDomain, insecure)
+		conn, err = dialTLS(ctx, dialer, addrIP, insecure)
 		if err != nil {
-			conn, err = dialTLS(ctx, dialer, addrIP, insecure)
+			conn, err = dialTLS(ctx, dialer, addrDomain, insecure)
 		}
 
 		if err != nil {
@@ -282,7 +283,10 @@ func Scan(
 		return nil, errors.New("no certificates found")
 	}
 
-	serverType := detectServerType(ctx, domain)
+	// Give the server type detector a fresh context since dialTLS might have consumed the parent
+	srvCtx, srvCancel := context.WithTimeout(context.Background(), 6*time.Second)
+	defer srvCancel()
+	serverType := detectServerType(srvCtx, domain, ip)
 	tlsVersion := detectTLSVersion(state)
 	hostnameOK := certs[0].VerifyHostname(domain) == nil
 

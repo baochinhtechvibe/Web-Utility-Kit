@@ -1,0 +1,15 @@
+﻿=== Testing With HTTP/2 (DefaultTransport Clone) ===
+[0] Success: 200 | Protocol: HTTP/1.1 (took 2.4346214s)
+[3] Success: 200 | Protocol: HTTP/1.1 (took 4.5313552s)
+[1] Error: Get "https://camerahik.vn": context deadline exceeded (Client.Timeout exceeded while awaiting headers) (took 5.0002038s)
+[2] Error: Get "https://camerahik.vn": context deadline exceeded (Client.Timeout exceeded while awaiting headers) (took 5.0002038s)
+[4] Error: Get "https://camerahik.vn": context deadline exceeded (Client.Timeout exceeded while awaiting headers) (took 5.0002038s)
+[5] Error: Get "https://camerahik.vn": context deadline exceeded (Client.Timeout exceeded while awaiting headers) (took 5.0002038s)
+
+=== Testing With Bare HTTP/1.1 Transport ===
+[4] Error: Get "https://camerahik.vn": context deadline exceeded (Client.Timeout exceeded while awaiting headers) (took 5.0005459s)
+[5] Error: Get "https://camerahik.vn": context deadline exceeded (Client.Timeout exceeded while awaiting headers) (took 5.0005459s)
+[3] Error: Get "https://camerahik.vn": context deadline exceeded (Client.Timeout exceeded while awaiting headers) (took 5.0005459s)
+[0] Error: Get "https://camerahik.vn": context deadline exceeded (Client.Timeout exceeded while awaiting headers) (took 5.0000261s)
+[1] Error: Get "https://camerahik.vn": context deadline exceeded (Client.Timeout exceeded while awaiting headers) (took 5.0000261s)
+[2] Error: Get "https://camerahik.vn": context deadline exceeded (Client.Timeout exceeded while awaiting headers) (took 5.0005459s)

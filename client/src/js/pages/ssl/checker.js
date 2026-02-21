@@ -33,8 +33,6 @@ const API_BASE_URL = "http://localhost:3102/api";
 /*
  * SSL Checker Elements
  */
-const btnToolChecker = document.getElementById("btnToolChecker");
-const toolChecker = document.getElementById("toolChecker")
 const formChecker = document.getElementById("formChecker");
 const inputChecker = document.getElementById("inputChecker");
 const btnSubmitChecker = document.getElementById("btnSubmitChecker");
@@ -49,7 +47,6 @@ const toolShareLink = document.getElementById("toolShareLink");
 const shareLinkChecker = document.getElementById("shareLinkChecker");
 const btnCopyLinkChecker = document.getElementById("btnCopyLinkChecker");
 const toolError = document.getElementById("toolError");
-const toolErrorTitle = document.getElementById("toolErrorTitle");
 const toolErrorMessage = document.getElementById("toolErrorMessage");
 
 const safe = (v, fallback = "N/A") => (v === null || v === undefined || v === "" ? fallback : v);
@@ -1114,10 +1111,10 @@ function renderCertCard(c) {
         signature_algo: signatureAlgo = "",
     } = c || {};
 
-     const sanList = getSans(sans);
-     const orgList = getOrganization(organization);
-     const location = getLocation(locality, province, country);
-     const notAfterStatus = getNotAfterStatus(notAfter);
+    const sanList = getSans(sans);
+    const orgList = getOrganization(organization);
+    const location = getLocation(locality, province, country);
+    const notAfterStatus = getNotAfterStatus(notAfter);
 
     return `
         <div class="cert-card__wrapper d-flex gap-2">
