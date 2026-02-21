@@ -1,15 +1,20 @@
 # ===============================================
-# .gitignore for SEO Tools Website Project
+
+# .gitignore for SEO / Web Tools Website Project
+
 # ===============================================
 
 # ===== Operating System Files =====
+
 # macOS
+
 .DS_Store
 .AppleDouble
 .LSOverride
 ._*
 
 # Windows
+
 Thumbs.db
 Thumbs.db:encryptable
 ehthumbs.db
@@ -19,17 +24,21 @@ ehthumbs_vista.db
 $RECYCLE.BIN/
 
 # Linux
+
 *~
 .directory
 .Trash-*
 
 # ===== IDE & Editor Files =====
+
 # Visual Studio Code
+
 .vscode/
 *.code-workspace
 .history/
 
-# JetBrains IDEs (WebStorm, PhpStorm, etc.)
+# JetBrains IDEs
+
 .idea/
 *.iml
 *.iws
@@ -37,131 +46,181 @@ $RECYCLE.BIN/
 out/
 
 # Sublime Text
+
 *.sublime-project
 *.sublime-workspace
 
 # Atom
+
 .atom/
 
 # Eclipse
+
 .project
 .classpath
 .settings/
 
 # Vim
-[._]*.s[a-v][a-z]
-[._]*.sw[a-p]
-[._]s[a-rt-v][a-z]
-[._]ss[a-gi-z]
+
+[.*]*.s[a-v][a-z]
+[.*]*.sw[a-p]
+[.*]s[a-rt-v][a-z]
+[.*]ss[a-gi-z]
 [._]sw[a-p]
 
 # ===== Dependencies & Packages =====
+
 # Node.js
+
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
-yarn.lock
+pnpm-debug.log*
 
-# Composer (PHP)
+# Lock files (uncomment if you want reproducible builds instead)
+
+# package-lock.json
+
+# yarn.lock
+
+# pnpm-lock.yaml
+
+# PHP / Composer
+
 vendor/
-composer.lock
 
 # ===== Build & Distribution =====
+
 dist/
 build/
+out/
+release/
+debug/
+
 *.min.css
 *.min.js
 *.map
 
 # ===== Temporary Files =====
+
 tmp/
 temp/
 *.tmp
 *.bak
 *.swp
 *.swo
-*~.nib
 
 # ===== Logs =====
+
 logs/
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 lerna-debug.log*
 
 # ===== Environment Variables =====
+
 .env
-.env.local
-.env.development
-.env.test
-.env.production
-.env.*.local
+.env.*
+!.env.example
 
 # ===== Database =====
+
 *.sql
 *.sqlite
 *.sqlite3
 *.db
 
 # ===== Uploads & User Generated Content =====
+
 uploads/
 user-uploads/
 storage/
+public/uploads/
 
 # ===== Cache =====
+
 .cache/
 .parcel-cache/
 .webpack/
 *.cache
 
 # ===== Testing =====
+
 coverage/
 .nyc_output/
-*.test.js.snap
-
-# ===== Documentation (if auto-generated) =====
-# docs/generated/
-# api-docs/
+playwright-report/
+test-results/
 
 # ===== Sensitive Information =====
+
 *.pem
 *.key
 *.cert
 *.crt
-config/secrets.js
-config/credentials.js
+*.p12
+*.pfx
+
+config/secrets.*
+config/credentials.*
 
 # ===== Deployment =====
+
 .deployment
+.vercel/
+.netlify/
 .htaccess
 
+# ===== Binary & Large Files (IMPORTANT) =====
+
+# Executables & installers
+
+*.exe
+*.msi
+*.dmg
+*.pkg
+*.deb
+*.rpm
+
+# Archives
+
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+*.bz2
+
+# Geo / DB binary data
+
+*.mmdb
+
+# Media large assets (uncomment if using CDN)
+
+# *.mp4
+
+# *.mov
+
+# *.avi
+
+# *.webm
+
 # ===== Project Specific =====
-# Backup files
+
 *.backup
 backup/
-
-# Analytics & tracking files
 analytics/
 stats/
 
-# Minified versions (keep source only)
-# assets/css/*.min.css
-# assets/js/*.min.js
+# ===== Optional CDN-based assets =====
 
-# ===== Optional: Uncomment if needed =====
-# Fonts (if using CDN instead)
 # assets/fonts/
 
-# Images (if using CDN/external hosting)
 # assets/images/
-*.exe
-# Vendor libraries (if using CDN)
+
 # vendor/
 
 # ===== Keep These Files =====
+
 !.gitkeep
 !README.md
 !LICENSE
